@@ -1,0 +1,5 @@
+
+func main() {
+    let sum = 2 + 3
+    print("The sum of 2 and 3 is {sum}")
+}

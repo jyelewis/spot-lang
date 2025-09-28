@@ -1,0 +1,17 @@
+
+func main() {
+    // TODO: what is a boolean but an enum with two cases?
+    let isAuthorized = True
+
+    if isAuthorized {
+        print("Access granted.")
+    } else {
+        print("Access denied.")
+    }
+
+    if !isAuthorized {
+        print("isAuthorized False")
+    } else {
+        print("isAuthorized True")
+    }
+}
