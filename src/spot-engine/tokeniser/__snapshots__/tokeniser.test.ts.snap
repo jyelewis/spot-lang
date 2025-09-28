@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tokeniser Reads hello world example 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 3,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 4,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 8,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 9,
+      "line": 4,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "Hello, World!",
+    "location": {
+      "column": 9,
+      "line": 4,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 5,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 6,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
