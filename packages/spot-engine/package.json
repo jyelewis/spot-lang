@@ -1,0 +1,23 @@
+{
+  "name": "@spot-lang/engine",
+  "version": "0.1.0",
+  "description": "Core engine for the Spot programming language",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "spot",
+    "programming-language",
+    "engine"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.2"
+  }
+}
