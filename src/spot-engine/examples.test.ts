@@ -2,7 +2,7 @@ import path from 'node:path';
 import { executeCodeFile } from './index';
 import fs from 'node:fs/promises';
 
-const examplesDir = `${__dirname}/../../../docs/code_examples`;
+const examplesDir = `${__dirname}/../../docs/code_examples`;
 
 describe('Test against examples', () => {
   const runsExample = async (exampleName: string) => {

@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "Hobby programming language 'spot'",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "build": "yarn workspaces run build",
     "test": "jest",
@@ -15,7 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "dev": "tsx packages/spot-engine/src/index.ts",
+    "dev": "tsx src/spot-engine/index.ts",
     "precommit": "yarn format && yarn lint && yarn typecheck && yarn test"
   },
   "devDependencies": {
