@@ -1,5 +1,6 @@
 import { CodeLocation } from './types';
 
+// comment: '// this is a comment'
 // keyword: func, let, if, else, return, null
 // symbol: "(" "{" ","
 // identifier: hello_world
@@ -10,6 +11,13 @@ import { CodeLocation } from './types';
 // StringTemplateEnd
 // int: 123
 // float: 45.67
+
+export interface SpotTokenComment {
+  type: 'comment';
+  location: CodeLocation;
+
+  comment: string;
+}
 
 export const spotKeywords = ['func', 'let', 'if', 'else', 'return', 'null'] as const;
 type SpotKeyword = (typeof spotKeywords)[number];
@@ -103,6 +111,7 @@ export interface SpotTokenFloat {
 }
 
 export type SpotToken =
+  | SpotTokenComment
   | SpotTokenKeyword
   | SpotTokenSymbol
   | SpotTokenIdentifier

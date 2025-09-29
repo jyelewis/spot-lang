@@ -1,0 +1,68 @@
+
+module S3 {
+    import aws_sdk
+
+    struct S3Bucket {
+        bucket_name: String
+
+        func upload(file_path: String, destination_path: String) -> Bool {
+            // Logic to upload file to S3 bucket
+            print("Uploading {file_path} to bucket {bucket_name} at {destination_path}")
+            return true
+        }
+
+        func download(file_path: String, destination_path: String) -> Bool {
+            // Logic to download file from S3 bucket
+            print("Downloading {file_path} from bucket {bucket_name} to {destination_path}")
+            return true
+        }
+    }
+
+    impl Module for S3Bucket {
+        // TODO: deps? We don't need them - this is already in a module
+    }
+
+    impl TerraformState for S3Bucket {
+        func to_terraform() -> String {
+            return """
+            resource "aws_s3_bucket" "{bucket_name}" {
+                bucket = "{bucket_name}"
+                acl    = "private"
+            }
+            """
+        }
+    }
+}
+
+module Buckets {
+    import S3
+
+    // TODO: nested modules?
+    module ProfilePhotosBucket = S3Bucket {
+        bucket_name: "profile-photos"
+    }
+}
+
+module AppCode {
+    import Buckets
+
+    func main() {
+        let profile_bucket = Buckets::ProfilePhotosBucket()
+
+        profile_bucket.upload("local/path/to/photo.jpg", "user123/photo.jpg")
+        profile_bucket.download("user123/photo.jpg", "local/path/to/downloaded_photo.jpg")
+
+        // I can also dynamically create buckets if I want, they'll still use the right imports
+        // I REALLY like this pattern
+
+        // TODO: what if we don't want people using the default constructor?
+        //       what if there is a private property..... do we even want private properties?
+        let temp_bucket = S3::S3Bucket {
+            bucket_name: "temp-bucket"
+        }
+        temp_bucket.upload("local/path/to/tempfile.txt", "tempfile.txt")
+    }
+}
+
+
+

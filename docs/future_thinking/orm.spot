@@ -1,13 +1,12 @@
 
-module UserRepository {
-    import orm
-
+module UserModel {
     enum Region {
         US
         EU
         ASIA
     }
 
+    // TODO: if we're mocking out the repo, how do we get this??
     // TODO: how does the repository know about this entity?
     @DbEntity()
     @CompositeIndex(["region", "is_admin"]) // TODO: How do we type this properly?
@@ -22,6 +21,16 @@ module UserRepository {
         region: Region
         is_admin: Bool
     }
+}
+
+// TODO: can this access imports from within the module? Feels a bit weird
+@RepositoryFor(UserModel::User)
+module UserRepository {
+    import UserModel
+    import orm
+
+
+
 
     func find_by_id(user_id) -> DbUser {
         return orm.execute_query<DbUser>(
@@ -34,19 +43,14 @@ module UserRepository {
 module UserService {
     import UserRepository
 
-    // TODO: UGH I hate this duplication crap
-    struct User {
-        user_id: String
-        username: String
-        is_admin: Bool = false
+    // TODO: set a log prefix for within this service?
+    //       or do we allow functions to trace their call?
+    import Logger
 
-        func can_delete() -> Bool {
-            return !is_admin
-        }
-    }
-
-    func retrieve_user(user_id) -> User {
+    func retrieve_user(user_id) -> UserRepository::User {
         let db_user = UserRepository::find_by_id(user_id)
+        log("got user from db: {db_user}")
+
         return db_user.into<User>()
     }
 
@@ -55,3 +59,5 @@ module UserService {
         return user.username
     }
 }
+
+

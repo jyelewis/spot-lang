@@ -1,5 +1,236 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Tokeniser Comments 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 3,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 4,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "comment": "this is a comment",
+    "location": {
+      "column": 3,
+      "line": 4,
+    },
+    "type": "comment",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 6,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser Floats 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 7,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "num",
+    "location": {
+      "column": 11,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "float": 123.456,
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "type": "float",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 5,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser Integers 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 7,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "num",
+    "location": {
+      "column": 11,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "int": 123,
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "type": "int",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 5,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
 exports[`Tokeniser Reads hello world example 1`] = `
 [
   {
@@ -78,6 +309,123 @@ exports[`Tokeniser Reads hello world example 1`] = `
     "location": {
       "column": 1,
       "line": 6,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser Variable definitions 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 3,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 4,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 7,
+      "line": 4,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "name",
+    "location": {
+      "column": 12,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 14,
+      "line": 4,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "literal": "John Doe",
+    "location": {
+      "column": 14,
+      "line": 4,
+    },
+    "type": "string_literal",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 8,
+      "line": 5,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 9,
+      "line": 5,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "Hello, World!",
+    "location": {
+      "column": 9,
+      "line": 5,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 6,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 7,
     },
     "symbol": "}",
     "type": "symbol",

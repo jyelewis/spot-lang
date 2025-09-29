@@ -1,0 +1,67 @@
+
+module S3 {
+    use logger;
+
+    struct S3Object {
+        name: String,
+        size: Int,
+    }
+
+    trait S3Bucket {
+        func bucket_name() -> String
+        func region() -> String
+
+        func list_objects() -> List<S3Object> {
+            log("Listing objects in S3 bucket {this.bucket_name()} in region {this.region()}");
+            return []
+        }
+    }
+}
+
+module PhotosBucket {
+    use S3
+    use Config
+
+    implements S3::S3Bucket
+
+    func bucket_name() {
+        return "my-photos-bucket"
+    }
+
+    func region() {
+        return Config::primary_aws_region()
+    }
+}
+
+// TODO: this is so close to rust modules
+module AppCode {
+    use PhotosBucket;
+
+    func main() {
+        PhotosBucket::list_objects();
+    }
+
+    struct DynBucket {
+        implements S3::S3Bucket
+        implements Printable
+
+        bucket_name: String
+        region: String
+
+        func bucket_name() {
+            return this.bucket_name
+        }
+
+        func region() {
+            return this.region
+        }
+    }
+
+    func dynamic_instantiation(bucket_name: String, region: String) {
+        let bucket = DynBucket {
+            bucket_name: bucket_name,
+            region: region,
+        }
+        bucket.list_objects();
+    }
+}

@@ -6,6 +6,7 @@ module UserService {
     }
 }
 
+// TODO: if we move gloal decorators inside the module, does the file itself become the module container? - feels much more typical
 // TODO: where do these global decorators get imported from...
 @RestApi("/users/")
 module UserController {

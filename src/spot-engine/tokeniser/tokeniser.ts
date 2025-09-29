@@ -6,6 +6,21 @@ export function tokeniseCode(code: string): SpotToken[] {
   const codeReader = new CodeFileReader(code);
   const tokens: SpotToken[] = [];
   while (!codeReader.isEOF) {
+    // try to match comments
+    if (codeReader.peak('//')) {
+      const commentLocation = codeReader.cloneLocation();
+
+      // rest of the line is a comment
+      codeReader.consume('//');
+      const commentText = codeReader.restOfCurrentLine;
+      codeReader.consume(commentText);
+      tokens.push({
+        type: 'comment',
+        location: commentLocation,
+        comment: commentText,
+      });
+    }
+
     // try to match keyword tokens
     let foundKeyword = false;
     for (const keyword of spotKeywords) {
@@ -69,6 +84,44 @@ export function tokeniseCode(code: string): SpotToken[] {
         type: 'string_literal',
         location: startLocation,
         literal,
+      });
+      continue;
+    }
+
+    // try to match a float literal
+    const floatMatch = codeReader.restOfCurrentLine.match(/^([0-9]+\.[0-9]+)/);
+    if (floatMatch !== null) {
+      const floatLocation = codeReader.cloneLocation();
+      const floatString = floatMatch[0];
+      const floatValue = parseFloat(floatString);
+      assert(!isNaN(floatValue), 'Should have parsed a float');
+
+      const didConsume = codeReader.consume(floatString);
+      assert(didConsume, 'Should have consumed the float literal');
+
+      tokens.push({
+        type: 'float',
+        location: floatLocation,
+        float: floatValue,
+      });
+      continue;
+    }
+
+    // try to read an integer literal
+    const intMatch = codeReader.restOfCurrentLine.match(/^([0-9]+)/);
+    if (intMatch !== null) {
+      const intLocation = codeReader.cloneLocation();
+      const intString = intMatch[0];
+      const intValue = parseInt(intString, 10);
+      assert(!isNaN(intValue), 'Should have parsed an integer');
+
+      const didConsume = codeReader.consume(intString);
+      assert(didConsume, 'Should have consumed the integer literal');
+
+      tokens.push({
+        type: 'int',
+        location: intLocation,
+        int: intValue,
       });
       continue;
     }
