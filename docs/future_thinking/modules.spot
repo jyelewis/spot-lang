@@ -1,0 +1,13 @@
+
+// ah-ha! If we want inheritance here, we need inheritance in structs
+// but we don't, so modules need composition as well
+// TODO: also we get into a weird state with how much of the language we run at build time.. how do we construct these static structs?
+struct ImagesBucket {
+    images: [Image]
+}
+impl S3Bucket for ImagesBucket {}
+
+struct ImageServiceSingleton {
+    ImagesBucket: Im
+}
+

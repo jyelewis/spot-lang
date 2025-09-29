@@ -1,0 +1,222 @@
+
+// TODO: what if we wanted this to be swappable with other blob storage systems?
+//       leave that thought for now
+struct S3Object {
+    key: String,
+    etag: String?,
+    body: ReadableStream,
+}
+
+
+// so whats the difference between a template module and a struct?
+// module template S3Bucket {
+struct S3Bucket {
+    region: String,
+    bucket_name: String
+}
+
+impl S3Bucket {
+    func getObject(key: String) -> Option<S3Object> {
+        // Simulate fetching an object from S3
+        if key == "existing_key" {
+            return {
+                Some(S3Object {
+                    key: key,
+                    etag: "example-etag",
+                    body: ReadableStream {}, // Placeholder for the actual stream
+                })
+            }
+        }
+
+        return None;
+    }
+}
+
+// modules are sugar for singleton structs!
+// and sometimes, they aren't singletons
+// does this mean modules are mutable? Can they hold state like a database connection pool?
+module ImagesBucket = S3Bucket {
+    region: "us-west-2",
+    bucket_name: "my-images-bucket"
+}
+
+// ----
+module ImagesService {
+    import ImagesBucket
+
+    func list_images(): List<String> {
+        let image_objects = ImagesBucket.list_objects(
+            prefix: "images/",
+            delimiter: "/",
+            maxKeys: 100
+        )
+
+        return image_objects.map(|obj| obj.key)
+    }
+}
+
+// -------
+// above is syntax sugar for:
+struct ImagesServiceSingleton {
+    ImagesBucket: S3Bucket
+}
+
+impl {
+    func list_images(): List<String> {
+        let image_objects = ImagesBucket.list_objects(
+            prefix: "images/",
+            delimiter: "/",
+            maxKeys: 100
+        )
+
+        return image_objects.map(|obj| obj.key)
+    }
+}
+
+// ok so modules are like globa variables?
+// and we're still a tree - so we can mock things out where we need
+// or are these mocks thread local?
+module ImagesService = ImagesServiceSingleton {
+    ImagesBucket: loadGlobalModule("ImagesBucket")
+}
+
+module ImagesServiceTest {
+    @Test("list_images returns image keys")
+    // TODO: no type saftey on missing mocks
+    @Mock(ImagesBucket)
+    func test_list_images() {
+        // arrange
+        // this is a mutation function..
+        ImagesBucket.get_object.mockReturnValue(Some(S3Object {
+            key: "images/sample.jpg",
+            etag: "sample-etag",
+            body: ReadableStream {}, // Placeholder for the actual stream
+        }))
+
+        // act
+        let keys = ImagesService.listImages()
+
+        // assert
+        assert(keys == ["images/sample.jpg"])
+
+        assert(ImagesBucket.get_object.calledWith("images/sample.jpg"))
+    }
+
+    @Test("Syntax 2")
+    func test_syntax_2() {
+        let ImagesService = loadModule(ImagesService, {
+            with_mocks: {
+                ImagesBucket: MockS3Bucket {}
+            }
+        })
+
+        // arrange
+        ImagesBucket.get_object.mockReturnValue(None)
+
+        // act
+        let keys = ImagesService.listImages()
+
+        // assert
+        assert(keys == [])
+    }
+
+    @Test("Syntax 3)
+    func test_syntax_3() {
+        // arrange
+        // TODO: what is the boundary of this state?
+        Testing.mockModule(ImagesBucket, MockS3Bucket {})
+
+        // TODO: need to 'boot' the application after we've mocked
+
+        // act
+        let keys = ImagesService.listImages()
+
+        // assert
+        assert(keys == [])
+    }
+
+    // ooh - what if we can start new module trees at any point
+    @Test("Syntax 4")
+    func test_syntax_4() {
+        let app = Testing.constructModule(ImagesService, {)
+            with_mocks: {
+                ImagesBucket: MockS3Bucket {}
+            }
+        })
+    }
+}
+
+// syntax 5 - this is my favourite
+@TestSuite
+@TestIsolation(Full) // run each test with its own module tree, resetting each time
+module ImageServiceTest {
+    // anything that imports this same module once we've done this will get the mock
+    // TODO: in unit tests we want a new module tree each time
+    //       in integration tests we want to share the same tree
+    mock import ImagesBucket = MockS3Bucket {
+        objects: [
+            S3Object {
+                key: "images/sample.jpg",
+                etag: "sample-etag",
+                body: ReadableStream {}, // Placeholder for the actual stream
+            }
+        ]
+    }
+    import ImagesService
+
+    @Test func test_list_images() {
+        // arrange
+
+        // act
+        let keys = ImagesService.listImages()
+
+        // assert
+        assert(keys == ["images/sample.jpg"])
+
+        assert(ImagesBucket.get_object.calledWith("images/sample.jpg"))
+    }
+
+    @Test func test_list_images() {
+        // arrange
+        // TODO: hm, this feels particularly magic
+        mock func ImagesBucket.get_object() {
+            return Some(S3Object    {
+                key: "images/sample.jpg",
+                etag: "sample-etag",
+                body: ReadableStream {}, // Placeholder for the actual stream
+            })
+        }
+
+        // act
+        let keys = ImagesService.listImages()
+
+        // assert
+        assert(keys == ["images/sample.jpg"])
+
+        assert(ImagesBucket.get_object.calledWith("images/sample.jpg"))
+    }
+}
+
+// testing lib code
+module Testing {
+    func runTestSuite() {
+        // TODO: what actaully is this reference? Is it constructed? Still a struct?
+        //       work out what this sugar is actually doing under the hood with structs & impls
+
+        let test_suite = ImageServiceTest
+
+        let test_fns = Reflect
+            .getFunctions(ImageServiceTest)
+            .filter(|fn| Reflect.getAttributes(fn).some(|attr| attr is Test))
+
+        for test_fn in test_fns {
+            Thread.spawn {
+                Thread.clear_module_tree()
+            }
+            test_fn()
+        }
+    }
+}
+
+
+

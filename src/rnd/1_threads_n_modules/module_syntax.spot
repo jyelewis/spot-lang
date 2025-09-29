@@ -1,0 +1,41 @@
+
+module UserService {
+    func get_username(user_id) -> String {
+        let user = retrieve_user(user_id)
+        return user.username
+    }
+}
+
+// TODO: where do these global decorators get imported from...
+@RestApi("/users/")
+module UserController {
+    import UserService
+
+    @Get("/:user_id/display_name")
+    func get_user_display_name(
+        @Param("user_id") user_id: String
+    ) -> String {
+        let username = UserService::get_username(user_id)
+        return "Display Name: {username}"
+    }
+}
+
+// ------- testing -------
+// TODO: we're torn between traits & classes again
+module MockUserService implements UserService {
+    func get_username(user_id) -> String {
+        return "MockUser{user_id}"
+    }
+}
+
+@TestSuite
+module UserControllerTest {
+    import UserController
+    import MockUserService as UserService
+
+    @Test
+    func test_get_user_display_name() {
+        let display_name = UserController::get_user_display_name("123")
+        assert(display_name == "MockUser123")
+    }
+}

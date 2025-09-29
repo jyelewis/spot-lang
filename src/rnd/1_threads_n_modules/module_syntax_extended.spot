@@ -1,0 +1,99 @@
+
+module UserService {
+    import UserRepository
+
+    struct User {
+        user_id: String
+        username: String
+        is_admin: Bool = false
+
+        func can_delete() -> Bool {
+            return !is_admin
+        }
+    }
+
+    func retrieve_user(user_id) -> User {
+        let db_user = UserRepository::find_by_id(user_id)
+        return db_user.into<User>()
+    }
+
+    func get_username(user_id) -> String {
+        let user = retrieve_user(user_id)
+        return user.username
+    }
+}
+
+// TODO: where do these global decorators get imported from...
+@RestApi("/users/")
+module UserController {
+    import UserService
+
+    @Get("/:user_id/display_name")
+    func get_user_display_name(
+        @Param("user_id") user_id: String
+    ) -> String {
+        let username = UserService::get_username(user_id)
+        return "Display Name: {username}"
+    }
+
+    @Delete("/:user_id")
+    func delete_user(
+        @Param("user_id") user_id: String
+    ) -> String {
+        // check we can delete the user
+        let user = UserService::retrieve_user(user_id)
+        if !user.can_delete() {
+            throw BadRequestError("Cannot delete user {user.user_id}")
+        }
+
+        UserService::delete_user(user_id)
+
+        // logic to delete user
+        return "User {user_id} deleted"
+    }
+
+    struct CreateUserDTO {
+        username: String
+        is_admin: Bool = false
+
+        func into<UserService::User>() -> UserService::User {
+            return UserService::User {
+                user_id: "generated_id", // TODO: the classic computed property/typing problem
+                username: self.username,
+                is_admin: self.is_admin
+            }
+        }
+    }
+    @Post("/")
+    func create_user(
+        @Body body: CreateUserDTO
+    ) -> String {
+        // logic to create user
+        let new_user = UserService::User {
+            user_id: "generated_id",
+            username: body.username,
+            is_admin: body.is_admin
+        }
+        return "User {new_user.user_id} created with username {new_user.username}"
+    }
+}
+
+// ------- testing -------
+// TODO: we're torn between traits & classes again
+module MockUserService implements UserService {
+    func get_username(user_id) -> String {
+        return "MockUser{user_id}"
+    }
+}
+
+@TestSuite
+module UserControllerTest {
+    import UserController
+    import MockUserService as UserService
+
+    @Test
+    func test_get_user_display_name() {
+        let display_name = UserController::get_user_display_name("123")
+        assert(display_name == "MockUser123")
+    }
+}

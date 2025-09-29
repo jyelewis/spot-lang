@@ -1,0 +1,57 @@
+
+module UserRepository {
+    import orm
+
+    enum Region {
+        US
+        EU
+        ASIA
+    }
+
+    // TODO: how does the repository know about this entity?
+    @DbEntity()
+    @CompositeIndex(["region", "is_admin"]) // TODO: How do we type this properly?
+    struct User {
+        @PrimaryKey
+        @AutoGenerate(UUID)
+        user_id: String
+
+        @Unique
+        username: String
+
+        region: Region
+        is_admin: Bool
+    }
+
+    func find_by_id(user_id) -> DbUser {
+        return orm.execute_query<DbUser>(
+            // TODO: template strings for params
+            "SELECT * FROM users WHERE user_id = {user_id}"
+        )
+    }
+}
+
+module UserService {
+    import UserRepository
+
+    // TODO: UGH I hate this duplication crap
+    struct User {
+        user_id: String
+        username: String
+        is_admin: Bool = false
+
+        func can_delete() -> Bool {
+            return !is_admin
+        }
+    }
+
+    func retrieve_user(user_id) -> User {
+        let db_user = UserRepository::find_by_id(user_id)
+        return db_user.into<User>()
+    }
+
+    func get_username(user_id) -> String {
+        let user = retrieve_user(user_id)
+        return user.username
+    }
+}
