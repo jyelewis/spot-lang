@@ -1,0 +1,31 @@
+module ImagesBucket : S3BucketModule {
+	bucket_name = "images"
+}
+
+module TilingJobQueue : SQSQueueModule {
+    import ImagesBucket
+
+    queue_name = "my-queue"
+    concurrency = 5
+
+    struct Msg {
+        image_key: String
+    }
+
+    func process_message(msg: Msg) {
+        let image_data = ImagesBucket.get_object(msg.image_key)
+        let tiles_blob = slice_into_tiles(image_data)
+        ImagesBucket.put_object("{msg.image_key}/tiles.blob", tiles_blob)
+    }
+
+    func handle_error(msg: Msg) {
+        logger::log("Failed to tile image {msg.image_key}")
+    }
+}
+
+module Myapp {
+    import TilingJobQueue
+    func enqueue_image_for_tiling(image_key: String) {
+        TilingJobQueue.add(TilingJobQueue::Msg { image_key })
+    }
+}

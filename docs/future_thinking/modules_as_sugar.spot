@@ -1,0 +1,25 @@
+
+module PhotosBucket {
+    implement S3Bucket {
+        name = "my-photos-bucket"
+        region = "us-west-2"
+    }
+}
+
+module PhotosService {
+    import PhotosBucket
+}
+
+------
+
+trait  === interface, partial implementation
+struct === class, can implement traits
+module === singleton class / object, can implement traits
+
+struct S3Bucket {
+
+}
+
+struct PhotosBucket {
+    implements S3Bucket
+}

@@ -1,0 +1,73 @@
+
+module EmailService {
+    import aws_ses
+
+    struct Email {
+        to: String
+        from: String
+        subject: String
+        body: String
+
+        implements into<aws_ses::Email>
+        func into<aws_ses::Email>() -> aws_ses::Email {
+            return aws_ses::Email {
+                to: self.to,
+                from: self.from,
+                subject: self.subject,
+                body: self.body
+            }
+        }
+
+        send() {
+            aws_ses::send(self.into())
+        }
+    }
+}
+
+module MockEmailService {
+    // whats the diff between a mock and an implementation?
+    // can only mock 1:1
+    // so is this just inheritence?
+    mocks EmailService
+
+    let mut last_email_sent: Option<Email> = None
+
+    // should this extension be more explicit?
+    struct Email {
+        send() {
+            last_email_sent = Some(self)
+            print("Mock send email to {self.to} with subject {self.subject}")
+        }
+    }
+}
+
+module MyApp {
+    import EmailService
+
+    func main() {
+        let email = EmailService::Email {
+            to: "test@example.com",
+            from: "",
+            subject: "Hello",
+            body: "This is a test email."
+        }
+        email.send()
+    }
+}
+
+@TestSuite
+module TestMyApp {
+    import MyApp
+    import EmailService = MockEmailService
+
+    func test_send_email() {
+        // in here EmailService and MockEmailService exist
+
+        // act
+        MyApp::main()
+
+        // assert
+        assert(MockEmailService.last_email_sent.is_some())
+    }
+}
+

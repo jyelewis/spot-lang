@@ -1,0 +1,99 @@
+
+module S3 {
+    import aws_sdk
+
+    struct S3Bucket {
+        name: String,
+        region: String,
+
+        func get_object(key: String) -> Option<S3Object> {
+            return aws_sdk.s3::get_object(self.name, key, self.region)
+        }
+    }
+
+    struct S3Object {
+        key: String,
+        data: String,
+    }
+
+    // TODO: traits on traits? This needs to provide build time infra
+    trait S3BucketModule {
+
+        implements TFInfrastructure
+
+        // TODO: this requires running code at compile time
+        // TODO: what if multiple traits implement TFInfrastructure?
+        func get_infrastructure() -> TFResource {
+            return TFResource {
+                resource_type: "aws_s3_bucket".to_string(),
+                name: self.get_bucket_name(),
+                properties: {
+                    "bucket": self.get_bucket_name(),
+                    "region": self.get_region(),
+                },
+            }
+        }
+
+        func get_object(key: String) -> Option<S3Object>
+    }
+}
+
+module MockS3 {
+    implements S3
+
+    // what if this was a decorator?
+    // @implements(S3)
+
+    struct S3Bucket {
+        // optionally override whichever methods we want to
+        func get_object(key: String) -> Option<S3Object> {
+            return Some(S3Object {
+                key: key,
+                data: "mock data".to_string(),
+            })
+        }
+    }
+}
+
+module ImagesBucket {
+    implements S3Bucket
+
+    bucket_name = "my-images-bucket"
+
+    // TODO: can we store these as module level variables, assuming they're const?
+    // how would we make that dynamic? do we want that?
+    // TODO: rubys approach is kinda interesting, classes are evaluated at runtime
+    //       isn't javascript a bit the same?
+    func get_bucket_name() {
+        return "my-images-bucket"
+    }
+
+    func get_region() {
+        return "us-west-2"
+    }
+}
+
+module ImagesBucket {
+    import S3
+
+    // the infra creation of this is quite implicit.. in maybe a bad way
+    @CreateInfra
+    pub bucket = S3::S3Bucket {
+        name: get_bucket_name(),
+        region: get_region(),
+    }
+}
+
+module DynamicBucket {
+    func main() {
+        // TODO: ok so are modules just global objects?
+        //       do we just let modules export global objects?
+        const my_bucket = S3::S3Bucket {
+            name: "my-dynamic-bucket".to_string(),
+            region: "us-east-1".to_string(),
+        }
+
+        const obj = my_bucket.get_object("path/to/object.txt")
+    }
+}
+

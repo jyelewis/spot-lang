@@ -1,0 +1,49 @@
+Module ImagesService {
+	import S3
+
+	let images_bucket = S3::Bucket { bucket_name: “images” }
+
+	@Infrastructure
+	func create_infra() {
+		return [images_bucket.as_tf()]
+	}
+}
+
+
+// TODO: what triggers the queue worker? Ideally this is automatic
+Module TilingJob {
+	import sqs
+	Import logger
+
+	struct TilingJobMsg {
+		image_key: String
+	}
+
+	let queue = sqs::queue<TilingJobMsg> { queue_name: “my-queue” }
+
+	func enqueue_image_for_tiling(image_key: String) {
+		self.queue.add(TilingJobMsg { image_key })
+	}
+
+	@queue.handler(concurrency=5)
+	func tile_image_worker(msg: TilingJobMsg) {
+		let image_data = self.images_bucket.get_object(msg.image_key)
+		let tiles_blob = slice_into_tiles(image_data)
+		self.images_bucket.put_object(“{image_key}/tiles.blob”, tiles_blob)
+	}
+
+	@queue.error_handler
+	func tile_image_error_handler(msg: TilingJobMsg) {
+		logger::log(“Failed to tile image {msg.image_key}”)
+	}
+
+	@infrastructure
+	func create_infra() {
+		return [self.queue.as_tf()]
+	}
+
+	@entrypoint
+	func queue_worker() {
+        self.queue.start_worker()
+    }
+}

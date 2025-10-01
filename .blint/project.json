@@ -1,0 +1,44 @@
+{
+  "projectName": "spot-lang",
+  "projectLanguage": "typescript",
+  "specFileStrategy": "distributed",
+  "patternFileStrategy": "distributed",
+  "symbolScanning": {
+    "maxResults": 1000,
+    "enableWatching": true,
+    "excludeDirectories": [
+      ".git",
+      ".specs",
+      ".patterns",
+      ".stories",
+      ".templates",
+      ".vscode",
+      ".idea",
+      "coverage",
+      ".cache",
+      "tmp",
+      "temp",
+      "logs",
+      "*.log",
+      "node_modules",
+      "dist",
+      "build",
+      ".next",
+      ".nuxt",
+      "out",
+      ".turbo",
+      ".vercel",
+      ".netlify",
+      ".parcel-cache",
+      ".yarn",
+      "bower_components"
+    ]
+  },
+  "projectPromptContext": {
+    "description": "",
+    "documentationUrl": "",
+    "websiteUrl": "",
+    "embeddedFiles": []
+  },
+  "aiSettings": {}
+}
