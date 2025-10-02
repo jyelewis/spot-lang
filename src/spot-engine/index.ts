@@ -7,7 +7,7 @@ export async function executeCodeFile(codeFilePath: string): Promise<string> {
 
   const tokens = tokeniseCode(code);
   const ast = parseCodeTokens(tokens);
-  console.log(tokens);
+  console.log(JSON.stringify(ast, null, 2));
 
   // fake output, we can't execute this for real yet
   return 'Hello, world!';

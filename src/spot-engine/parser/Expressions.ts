@@ -32,9 +32,18 @@ export interface SpotExpressionFunctionCall {
   location: CodeLocation;
 
   functionVariable: SpotExpressionVariableIdentifier;
+  parameters?: SpotExpression[]; // TODO: implement parameters
+}
+
+export interface SpotExpressionStringLiteral {
+  type: 'string_literal';
+  location: CodeLocation;
+
+  string: string;
 }
 
 export type SpotExpression =
   | SpotExpressionFunctionDefinition
   | SpotExpressionVariableIdentifier
-  | SpotExpressionFunctionCall;
+  | SpotExpressionFunctionCall
+  | SpotExpressionStringLiteral;

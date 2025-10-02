@@ -1,8 +1,15 @@
 import { SpotToken, SpotTokenIdentifier, SpotTokenKeyword } from '../tokeniser/SpotToken';
 import { ParserError } from './ParserError';
-import { SpotExpressionFunctionCall, SpotExpressionFunctionDefinition } from './Expressions';
+import {
+  SpotExpression,
+  SpotExpressionFunctionCall,
+  SpotExpressionFunctionDefinition,
+  SpotExpressionStringLiteral,
+} from './Expressions';
 import { SpotStatement } from './Statements';
 import assert from 'node:assert';
+
+// TODO: this must always parse expressions which I don't love, are all expressions statements? Probably not
 
 export function parseCodeTokens(tokens: SpotToken[]): SpotStatement[] {
   const parser = new Parser(tokens);
@@ -27,7 +34,7 @@ class Parser {
   }
 
   parseNext(): SpotStatement {
-    const next = this.tokens[this.position];
+    const next = this.next();
 
     switch (next.type) {
       case 'keyword':
@@ -37,6 +44,8 @@ class Parser {
       }
       case 'identifier':
         return this.parseIdentifier();
+      case 'string_literal':
+        return this.parseStringLiteral();
       default:
         throw new Error(`Unimplemented token type: ${next.type}`);
     }
@@ -49,6 +58,17 @@ class Parser {
       default:
         throw new Error(`Unimplemented keyword: ${token.keyword}`);
     }
+  }
+
+  parseStringLiteral(): SpotExpressionStringLiteral {
+    const stringLiteral = this.consume('string_literal');
+    assert(stringLiteral);
+
+    return {
+      type: 'string_literal',
+      location: stringLiteral.location,
+      string: stringLiteral.literal, // TODO: why don't these match?
+    };
   }
 
   parseFunctionDefinition(): SpotExpressionFunctionDefinition {
@@ -123,22 +143,38 @@ class Parser {
     }
     if (following.symbol === '(') {
       // function call
-      const next = this.next();
-      if (next.type === 'symbol' && next.symbol === ')') {
-        // end of function call
-        return {
-          type: 'function_call',
-          location: token.location,
-          functionVariable: {
-            type: 'variable_identifier',
-            location: token.location,
-            identifierText,
-          },
-        };
-      }
+      let params: SpotExpression[] = [];
+      while (true) {
+        const next = this.next();
+        if (next.type === 'symbol' && next.symbol === ')') {
+          // consume the closing paran
+          this.consume('symbol');
 
-      // we don't support params yet
-      throw new ParserError('Unimplemented function call with parameters', next.location);
+          // end of function call
+          return {
+            type: 'function_call',
+            location: token.location,
+            functionVariable: {
+              type: 'variable_identifier',
+              location: token.location,
+              identifierText,
+            },
+            parameters: params,
+          };
+        }
+
+        params.push(this.parseNext());
+
+        // consume commas after each param (optionally)
+        const next2 = this.next();
+        if (next2.type === 'symbol' && next2.symbol === ',') {
+          this.consume('symbol'); // consume the comma
+          continue;
+        }
+        if (next2.type !== 'symbol' || next2.symbol !== ')') {
+          throw new ParserError('Expected , or ) after function call parameter', next2.location);
+        }
+      }
     }
 
     throw new Error(`Unexpected symbol after identifier: ${following.symbol}`);
