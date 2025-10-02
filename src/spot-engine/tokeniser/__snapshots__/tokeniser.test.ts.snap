@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Tokeniser Comments 1`] = `
+exports[`Tokeniser Specific case Comments 1`] = `
 [
   {
     "keyword": "func",
@@ -61,7 +61,7 @@ exports[`Tokeniser Comments 1`] = `
 ]
 `;
 
-exports[`Tokeniser Floats 1`] = `
+exports[`Tokeniser Specific case Floats 1`] = `
 [
   {
     "keyword": "func",
@@ -146,7 +146,140 @@ exports[`Tokeniser Floats 1`] = `
 ]
 `;
 
-exports[`Tokeniser Integers 1`] = `
+exports[`Tokeniser Specific case Int addition 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 7,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "num",
+    "location": {
+      "column": 11,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 14,
+      "line": 3,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "int": 123,
+    "location": {
+      "column": 14,
+      "line": 3,
+    },
+    "type": "int",
+  },
+  {
+    "location": {
+      "column": 20,
+      "line": 3,
+    },
+    "symbol": "+",
+    "type": "symbol",
+  },
+  {
+    "int": 456,
+    "location": {
+      "column": 20,
+      "line": 3,
+    },
+    "type": "int",
+  },
+  {
+    "location": {
+      "column": 25,
+      "line": 3,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 27,
+      "line": 3,
+    },
+    "symbol": "-",
+    "type": "symbol",
+  },
+  {
+    "int": 1,
+    "location": {
+      "column": 27,
+      "line": 3,
+    },
+    "type": "int",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 5,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser Specific case Integers 1`] = `
 [
   {
     "keyword": "func",
@@ -231,7 +364,7 @@ exports[`Tokeniser Integers 1`] = `
 ]
 `;
 
-exports[`Tokeniser Reads hello world example 1`] = `
+exports[`Tokeniser Specific case Reads hello world example 1`] = `
 [
   {
     "keyword": "func",
@@ -316,7 +449,289 @@ exports[`Tokeniser Reads hello world example 1`] = `
 ]
 `;
 
-exports[`Tokeniser Variable definitions 1`] = `
+exports[`Tokeniser Specific case String addition 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 7,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "name",
+    "location": {
+      "column": 12,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 14,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "literal": "John",
+    "location": {
+      "column": 14,
+      "line": 3,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 23,
+      "line": 3,
+    },
+    "symbol": "+",
+    "type": "symbol",
+  },
+  {
+    "literal": " Doe",
+    "location": {
+      "column": 23,
+      "line": 3,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 5,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser Specific case Variable addition 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 7,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "first_name",
+    "location": {
+      "column": 18,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 20,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "literal": "John",
+    "location": {
+      "column": 20,
+      "line": 3,
+    },
+    "type": "string_literal",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 7,
+      "line": 4,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "last_name",
+    "location": {
+      "column": 17,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 19,
+      "line": 4,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "literal": "Doe",
+    "location": {
+      "column": 19,
+      "line": 4,
+    },
+    "type": "string_literal",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 7,
+      "line": 6,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "name",
+    "location": {
+      "column": 12,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 14,
+      "line": 6,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "identifier": "first_name",
+    "location": {
+      "column": 25,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 27,
+      "line": 6,
+    },
+    "symbol": "+",
+    "type": "symbol",
+  },
+  {
+    "literal": " ",
+    "location": {
+      "column": 27,
+      "line": 6,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 33,
+      "line": 6,
+    },
+    "symbol": "+",
+    "type": "symbol",
+  },
+  {
+    "identifier": "last_name",
+    "location": {
+      "column": 1,
+      "line": 7,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 8,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser Specific case Variable definitions 1`] = `
 [
   {
     "keyword": "func",
@@ -426,6 +841,714 @@ exports[`Tokeniser Variable definitions 1`] = `
     "location": {
       "column": 1,
       "line": 7,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 10,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 3,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "Hello, world!",
+    "location": {
+      "column": 11,
+      "line": 3,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 4,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 5,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 9,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "name",
+    "location": {
+      "column": 14,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 16,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "literal": "John Doe",
+    "location": {
+      "column": 16,
+      "line": 3,
+    },
+    "type": "string_literal",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 9,
+      "line": 4,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "age",
+    "location": {
+      "column": 13,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 15,
+      "line": 4,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "int": 36,
+    "location": {
+      "column": 15,
+      "line": 4,
+    },
+    "type": "int",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 10,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 6,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "Hello, my name is {name} and I am {age} years old.",
+    "location": {
+      "column": 11,
+      "line": 6,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 7,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 8,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 9,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "sum",
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 15,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "int": 2,
+    "location": {
+      "column": 15,
+      "line": 3,
+    },
+    "type": "int",
+  },
+  {
+    "location": {
+      "column": 19,
+      "line": 3,
+    },
+    "symbol": "+",
+    "type": "symbol",
+  },
+  {
+    "int": 3,
+    "location": {
+      "column": 19,
+      "line": 3,
+    },
+    "type": "int",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 10,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 4,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "The sum of 2 and 3 is {sum}",
+    "location": {
+      "column": 11,
+      "line": 4,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 5,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 2,
+      "line": 5,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 3,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "comment": "TODO: what is a boolean but an enum with two cases?",
+    "location": {
+      "column": 5,
+      "line": 3,
+    },
+    "type": "comment",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 9,
+      "line": 4,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "isAuthorized",
+    "location": {
+      "column": 22,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 24,
+      "line": 4,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "identifier": "True",
+    "location": {
+      "column": 5,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "keyword": "if",
+    "location": {
+      "column": 8,
+      "line": 6,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "isAuthorized",
+    "location": {
+      "column": 21,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 9,
+      "line": 7,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 14,
+      "line": 7,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 15,
+      "line": 7,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "Access granted.",
+    "location": {
+      "column": 15,
+      "line": 7,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 8,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 7,
+      "line": 8,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+  {
+    "keyword": "else",
+    "location": {
+      "column": 12,
+      "line": 8,
+    },
+    "type": "keyword",
+  },
+  {
+    "location": {
+      "column": 9,
+      "line": 9,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 14,
+      "line": 9,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 15,
+      "line": 9,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "Access denied.",
+    "location": {
+      "column": 15,
+      "line": 9,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 10,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 12,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+  {
+    "keyword": "if",
+    "location": {
+      "column": 8,
+      "line": 12,
+    },
+    "type": "keyword",
+  },
+  {
+    "location": {
+      "column": 9,
+      "line": 12,
+    },
+    "symbol": "!",
+    "type": "symbol",
+  },
+  {
+    "identifier": "isAuthorized",
+    "location": {
+      "column": 22,
+      "line": 12,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 9,
+      "line": 13,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 14,
+      "line": 13,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 15,
+      "line": 13,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "isAuthorized False",
+    "location": {
+      "column": 15,
+      "line": 13,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 14,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 7,
+      "line": 14,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+  {
+    "keyword": "else",
+    "location": {
+      "column": 12,
+      "line": 14,
+    },
+    "type": "keyword",
+  },
+  {
+    "location": {
+      "column": 9,
+      "line": 15,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 14,
+      "line": 15,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 15,
+      "line": 15,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "literal": "isAuthorized True",
+    "location": {
+      "column": 15,
+      "line": 15,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 16,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 17,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 2,
+      "line": 17,
     },
     "symbol": "}",
     "type": "symbol",

@@ -110,6 +110,8 @@ export interface SpotTokenFloat {
   float: number;
 }
 
+export type SpotTokenType = SpotToken['type'];
+
 export type SpotToken =
   | SpotTokenComment
   | SpotTokenKeyword

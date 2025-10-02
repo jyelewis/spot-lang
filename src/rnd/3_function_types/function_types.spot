@@ -1,0 +1,17 @@
+
+func say_hello() {
+    print("Hello!")
+}
+
+struct SourcePhoto {
+    var image_key: String
+    var region: AWSRegion
+    var width: Int
+    var height: Int
+
+    func check_exists() {
+        let bucket = StorageService.get_bucket_for_region(self.region)
+        return bucket.has_object(self.image_key);
+    }
+}
+

@@ -1,35 +1,40 @@
 import { CodeLocation } from '../tokeniser/types';
 import { SpotStatement } from './Statements';
 
-interface SpotExpressionFunctionDefinitionParameter {
-  type: 'function_definition_parameter';
-  location: CodeLocation;
+// interface SpotExpressionFunctionDefinitionParameter {
+//   type: 'function_definition_parameter';
+//   location: CodeLocation;
+//
+//   parameterName: SpotExpressionIdentifier;
+//   parameterType: SpotExpressionType;
+//   defaultValue: null | SpotExpression; // null means no default, not default of null
+// }
 
-  parameterName: SpotExpressionIdentifier;
-  parameterType: SpotExpressionType;
-  defaultValue: null | SpotExpression; // null means no default, not default of null
-}
-
-// TODO: what makes these valid at the top level?
-interface SpotExpressionFunctionDefinition {
+// TODO: is a function an expression, statement, or something else?
+export interface SpotExpressionFunctionDefinition {
   type: 'function_definition';
   location: CodeLocation;
 
   functionName: string;
-  parameters: SpotExpressionFunctionDefinitionParameter[];
+  // parameters: SpotExpressionFunctionDefinitionParameter[];
   body: SpotStatement[];
 }
 
-interface SpotExpressionType {
-  type: 'type';
+export interface SpotExpressionVariableIdentifier {
+  type: 'variable_identifier';
   location: CodeLocation;
 
-  typeName: string;
-  // TODO: how does optional work?
-  // optionalSuger?: boolean;
-  // TODO: generics
+  identifierText: string;
 }
 
-type SpotExpressionIdentifier = string;
+export interface SpotExpressionFunctionCall {
+  type: 'function_call';
+  location: CodeLocation;
 
-export type SpotExpression = SpotExpressionFunctionDefinition;
+  functionVariable: SpotExpressionVariableIdentifier;
+}
+
+export type SpotExpression =
+  | SpotExpressionFunctionDefinition
+  | SpotExpressionVariableIdentifier
+  | SpotExpressionFunctionCall;
