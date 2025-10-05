@@ -1,4 +1,4 @@
-import { CodeLocation } from './types';
+import { CodeLocation } from '../types';
 
 // comment: '// this is a comment'
 // keyword: func, let, if, else, return, null

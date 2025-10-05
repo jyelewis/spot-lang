@@ -1,4 +1,4 @@
-import { CodeLocation } from '../1_tokeniser/types';
+import { CodeLocation } from '../types';
 
 export interface RegisterReference {
   index: number;

@@ -1,4 +1,4 @@
-import { CodeLocation } from '../1_tokeniser/types';
+import { CodeLocation } from '../types';
 import { SpotStatement } from './Statements';
 
 // interface SpotExpressionFunctionDefinitionParameter {
