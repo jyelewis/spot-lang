@@ -1,14 +1,14 @@
-import { CodeFileReader } from './CodeFileReader';
+import { StringReader } from './StringReader';
 
-describe('CodeFileReader', () => {
+describe('StringReader', () => {
   it('Skips whitespace on init', () => {
-    const reader = new CodeFileReader('   \n   abc');
+    const reader = new StringReader('   \n   abc');
     expect(reader.location).toEqual({ line: 2, column: 4 });
     expect(reader.restOfCurrentLine).toBe('abc');
   });
 
   it('Skips whitespace after consume', () => {
-    const reader = new CodeFileReader('abc  \n def');
+    const reader = new StringReader('abc  \n def');
     expect(reader.restOfCurrentLine).toBe('abc  ');
     reader.consume('abc');
     expect(reader.restOfCurrentLine).toBe('def');

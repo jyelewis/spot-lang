@@ -1,9 +1,9 @@
 import { spotKeywords, spotSymbols, SpotToken } from './SpotToken';
-import { CodeFileReader } from './CodeFileReader';
+import { StringReader } from './StringReader';
 import assert from 'node:assert';
 
 export function tokeniseCode(code: string): SpotToken[] {
-  const codeReader = new CodeFileReader(code);
+  const codeReader = new StringReader(code);
   const tokens: SpotToken[] = [];
   while (!codeReader.isEOF) {
     // try to match comments

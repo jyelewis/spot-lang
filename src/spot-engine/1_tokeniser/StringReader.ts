@@ -1,7 +1,7 @@
-import { CodeLocation } from './types';
+import { CodeLocation } from '../types';
 import assert from 'node:assert';
 
-export class CodeFileReader {
+export class StringReader {
   location: CodeLocation = { line: 1, column: 1 };
   lines: string[];
 
