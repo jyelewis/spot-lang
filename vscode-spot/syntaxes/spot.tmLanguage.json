@@ -2,9 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Spot",
   "scopeName": "source.spot",
-  "fileTypes": [
-    "spot"
-  ],
+  "fileTypes": ["spot"],
   "patterns": [
     {
       "include": "#command"
@@ -51,18 +49,18 @@
           "name": "meta.declaration.annotation.spot",
           "begin": "(@[^ (]+)(\\()",
           "beginCaptures": {
-              "1": {
+            "1": {
               "name": "entity.name.tag.smt"
-              },
-              "2": {
+            },
+            "2": {
               "name": "punctuation.section.parameters.begin.smt"
-              }
+            }
           },
           "end": "(\\))",
           "endCaptures": {
-              "1": {
-                "name": "punctuation.section.parameters.end.smt"
-              }
+            "1": {
+              "name": "punctuation.section.parameters.end.smt"
+            }
           }
         },
         {

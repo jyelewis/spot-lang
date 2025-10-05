@@ -32,6 +32,7 @@ yarn precommit           # Run all quality checks (format, lint, typecheck, test
 Spot is a hobby programming language implemented as a 4-stage compilation pipeline:
 
 ### Core Pipeline (src/spot-engine/)
+
 1. **Tokeniser** (`1_tokeniser/`) - Converts source code into tokens
    - `CodeFileReader.ts` - Handles reading and position tracking in source files
    - `SpotToken.ts` - Defines token types, keywords, and symbols
@@ -51,10 +52,12 @@ Spot is a hobby programming language implemented as a 4-stage compilation pipeli
    - Supports both direct execution and output capture
 
 ### Entry Point
+
 - `src/spot-engine/index.ts` - Main entry point with `executeCodeFile()` function
 - Orchestrates the full pipeline: tokenise → parse → compile → execute
 
 ### Test Structure
+
 - Each module has corresponding `.test.ts` files
 - `examples.test.ts` - End-to-end language feature tests
 - Jest configuration supports TypeScript with ts-jest preset
@@ -62,12 +65,14 @@ Spot is a hobby programming language implemented as a 4-stage compilation pipeli
 ## Language Implementation Notes
 
 The VM uses a register-based architecture where:
+
 - Functions are compiled to sequences of `Operation` objects
 - Operations manipulate `RegisterReference` objects
 - The main module must contain a `main` function as the entry point
 - Built-in functions can be implemented as intrinsics
 
 When working with the language implementation:
+
 - Follow the 4-stage pipeline when adding new features
 - Each stage should have corresponding tests
 - The `SpotApplication` format bridges compiler output and VM input

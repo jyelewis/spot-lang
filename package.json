@@ -14,7 +14,8 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "dev": "tsx src/spot-engine/index.ts",
-    "precommit": "yarn format && yarn lint && yarn typecheck && yarn test"
+    "checkall": "yarn format && yarn lint && yarn typecheck && yarn test",
+    "precommit": "yarn checkall"
   },
   "devDependencies": {
     "@types/jest": "^29.5.8",

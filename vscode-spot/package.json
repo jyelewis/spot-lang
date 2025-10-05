@@ -1,33 +1,33 @@
 {
-    "name": "vscode-spot",
-    "displayName": "Spot",
-    "description": "Language support for Spot",
-    "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.64.0"
-    },
-    "categories": [
-        "Programming Languages"
-    ],
-    "contributes": {
-        "languages": [
-            {
-                "id": "spot",
-                "aliases": [
-                    "spot"
-                ],
-                "extensions": [
-                    "spot"
-                ],
-                "configuration": "language-configuration.json"
-            }
+  "name": "vscode-spot",
+  "displayName": "Spot",
+  "description": "Language support for Spot",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.64.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "spot",
+        "aliases": [
+          "spot"
         ],
-        "grammars": [
-            {
-                "language": "spot",
-                "scopeName": "source.spot",
-                "path": "syntaxes/spot.tmLanguage.json"
-            }
-        ]
-    }
+        "extensions": [
+          "spot"
+        ],
+        "configuration": "language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "spot",
+        "scopeName": "source.spot",
+        "path": "syntaxes/spot.tmLanguage.json"
+      }
+    ]
+  }
 }
