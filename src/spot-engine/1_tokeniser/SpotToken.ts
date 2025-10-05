@@ -1,7 +1,7 @@
 import { CodeLocation } from '../types';
 
 // comment: '// this is a comment'
-// keyword: func, let, if, else, return, null
+// keyword: func, let, if, else, return
 // symbol: "(" "{" ","
 // identifier: hello_world
 // StringTemplateStart
@@ -12,20 +12,19 @@ import { CodeLocation } from '../types';
 // int: 123
 // float: 45.67
 
-export interface SpotTokenComment {
-  type: 'comment';
+type SpotTokenBase<T extends string> = {
+  type: T;
   location: CodeLocation;
+};
 
+export interface SpotTokenComment extends SpotTokenBase<'comment'> {
   comment: string;
 }
 
-export const spotKeywords = ['func', 'let', 'if', 'else', 'return', 'null'] as const;
+export const spotKeywords = ['func', 'let', 'mut', 'if', 'else', 'return'] as const;
 type SpotKeyword = (typeof spotKeywords)[number];
 
-export interface SpotTokenKeyword {
-  type: 'keyword';
-  location: CodeLocation;
-
+export interface SpotTokenKeyword extends SpotTokenBase<'keyword'> {
   keyword: SpotKeyword;
 }
 
@@ -55,62 +54,38 @@ export const spotSymbols = [
   ']',
 ] as const;
 type SpotSymbol = (typeof spotSymbols)[number];
-export interface SpotTokenSymbol {
-  type: 'symbol';
-  location: CodeLocation;
-
+export interface SpotTokenSymbol extends SpotTokenBase<'symbol'> {
   symbol: SpotSymbol;
 }
 
-export interface SpotTokenIdentifier {
-  type: 'identifier';
-  location: CodeLocation;
-
+export interface SpotTokenIdentifier extends SpotTokenBase<'identifier'> {
   identifier: string;
 }
 
-export interface SpotTokenStringTemplateStart {
+export interface SpotTokenStringTemplateStart extends SpotTokenBase<'string_template_start'> {
   type: 'string_template_start';
   location: CodeLocation;
 }
 
-export interface SpotTokenStringLiteral {
-  type: 'string_literal';
-  location: CodeLocation;
-
+export interface SpotTokenStringLiteral extends SpotTokenBase<'string_literal'> {
   literal: string;
 }
 
-export interface SpotTokenStringTemplateExpressionStart {
-  type: 'string_template_expression_start';
-  location: CodeLocation;
-}
+export interface SpotTokenStringTemplateExpressionStart
+  extends SpotTokenBase<'string_template_expression_start'> {}
 
-export interface SpotTokenStringTemplateExpressionEnd {
-  type: 'string_template_expression_end';
-  location: CodeLocation;
-}
+export interface SpotTokenStringTemplateExpressionEnd
+  extends SpotTokenBase<'string_template_expression_end'> {}
 
-export interface SpotTokenStringTemplateEnd {
-  type: 'string_template_end';
-  location: CodeLocation;
-}
+export interface SpotTokenStringTemplateEnd extends SpotTokenBase<'string_template_end'> {}
 
-export interface SpotTokenInt {
-  type: 'int';
-  location: CodeLocation;
-
+export interface SpotTokenInt extends SpotTokenBase<'int'> {
   int: number;
 }
 
-export interface SpotTokenFloat {
-  type: 'float';
-  location: CodeLocation;
-
+export interface SpotTokenFloat extends SpotTokenBase<'float'> {
   float: number;
 }
-
-export type SpotTokenType = SpotToken['type'];
 
 export type SpotToken =
   | SpotTokenComment
