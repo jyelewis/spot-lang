@@ -1,4 +1,4 @@
-import { SpotToken, SpotTokenKeyword } from '../tokeniser/SpotToken';
+import { SpotToken, SpotTokenKeyword } from '../1_tokeniser/SpotToken';
 import { ParserError } from './ParserError';
 import {
   SpotExpression,

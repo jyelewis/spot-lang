@@ -1,0 +1,114 @@
+use std::fs::File
+
+func main() {
+    // type 'File'
+    let log_file = File::open("logs.txt", mode = .read)
+
+    parse_log_file(log_file)
+
+}
+
+func parse_log_file(log_file: File) -> Iter<String> {
+// are we burying too much runtime in the type stuff? But also does it get rid of the overhead?
+//   different interface when there are params too... (dates)
+    let log_lines: Iter<WAFLogLine> = log_file.split("\n").into()
+}
+
+// timestamp=2025-09-22T09:14:02Z src_ip=198.51.100.88 action=ALLOW request="GET /products.php"
+enum WAFAction {
+    ALLOW,
+    DENY,
+    IGNORE,
+
+    implements from<String>; // default impl can do this
+}
+
+enum HTTPMethod {
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    PATCH,
+    OPTIONS,
+    HEAD,
+
+    implements from<String>; // default impl can do this
+}
+
+struct WAFLogLine {
+    timestamp: DateTime,
+    src_ip: String,
+    action: WAFAction,
+    method: HTTPMethod,
+    request_path: String,
+
+    implements from<String>;
+    static func from<String>(log_line_string: String): WAFLogLine {
+        // TODO: should this throw or return optional?
+        // what if we could mark whether we wanted an expression to return null on throw?
+        // cascades better than nulls everywhere
+        let parts = String::sscanf(log_line_string, "timestamp=%s src_ip=%s action=%s request=\"%s %s\"")
+                            // so sscanf returnns null but WAFLogLine.from<String> throws? Inconsistent
+                            // also do we need syntax for early returns when checking these things?
+                            .not_null_or_throw(LogParseError("Log line doesn't match expected format"))
+
+        return WAFLogLine {
+            timestamp: log_line_vars.get("timestamp")
+                                    .not_null_or_throw(LogParseError("Missing timestamp"))
+                                    .into(format = .ISO8601),
+
+            src_ip: log_line_vars.get("src_ip")
+                                  .not_null_or_throw(LogParseError("Missing src_ip")),
+
+            action: log_line_vars.get("action")
+                                 .not_null_or_throw(LogParseError("Missing action"))
+                                 .into(),
+
+            method: req_details[0].into(),
+
+            request_path: req_details[1],
+        }
+
+        // old version:
+
+
+
+        // AAH, that final section in the log is a PITA to parse.. has a space in it
+        let log_line_vars = log_line_string.split(" ").map((part) => {
+            let key_value = part.split("=")
+            // TODO: would be nice to have a type for this... TS would infer it from neat syntax
+            return {
+                key: key_value[0],
+                value: key_value[1]
+            }
+        }).into<Map<String, String>>()
+
+        // ---------------------------------------------
+        let mut log_line_vars = Map<string, string>();
+        for part in log_line_string.split(" ") {
+            let key_value = part.split("=")
+            log_line_vars[key_value[0]] = key_value[1]
+        }
+
+        // ---------------------------------------------
+
+        let req_details = log_line_vars.get("request").not_null_or_throw(LogParseError("Missing request")).split(" ")
+
+        return WAFLogLine{
+            timestamp: log_line_vars.get("timestamp")
+                                    .not_null_or_throw(LogParseError("Missing timestamp"))
+                                    .into(format="%Y-%m-%dT%H:%M:%SZ"),
+
+            src_ip: log_line_vars.get("src_ip")
+                                  .not_null_or_throw(LogParseError("Missing src_ip")),
+
+            action: log_line_vars.get("action")
+                                 .not_null_or_throw(LogParseError("Missing action"))
+                                 .into(),
+
+            method: req_details[0].into(),
+
+            request_path: req_details[1],
+        }
+    }
+}

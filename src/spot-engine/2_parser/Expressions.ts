@@ -1,4 +1,4 @@
-import { CodeLocation } from '../tokeniser/types';
+import { CodeLocation } from '../1_tokeniser/types';
 import { SpotStatement } from './Statements';
 
 // interface SpotExpressionFunctionDefinitionParameter {
@@ -32,7 +32,7 @@ export interface SpotExpressionFunctionCall {
   location: CodeLocation;
 
   functionVariable: SpotExpressionVariableIdentifier;
-  parameters?: SpotExpression[]; // TODO: implement parameters
+  parameters: SpotExpression[]; // TODO: implement parameters
 }
 
 export interface SpotExpressionStringLiteral {

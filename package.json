@@ -4,6 +4,7 @@
   "description": "Hobby programming language 'spot'",
   "private": true,
   "scripts": {
+    "execute": "tsx src/spot-engine/index.ts",
     "build": "yarn workspaces run build",
     "test": "jest",
     "test:watch": "jest --watch",

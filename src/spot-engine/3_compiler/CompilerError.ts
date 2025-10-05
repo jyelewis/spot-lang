@@ -1,8 +1,8 @@
-import { CodeLocation } from '../tokeniser/types';
+import { CodeLocation } from '../1_tokeniser/types';
 
-export class ParserError extends Error {
+export class CompilerError extends Error {
   constructor(message: string, location: CodeLocation) {
     super(`${message} at line ${location.line}:${location.column}`);
-    this.name = 'ParserError';
+    this.name = 'CompilerError';
   }
 }

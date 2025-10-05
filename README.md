@@ -1,3 +1,3 @@
 # spot-lang
 
-Hobby programming langage 'spot'
+Hobby programming language 'spot'
