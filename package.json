@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "description": "Hobby programming language 'spot'",
   "private": true,
+  "bin": {
+    "spot": "./dist/src/spot-engine/index.js"
+  },
   "scripts": {
-    "build": "yarn workspaces run build",
+    "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
