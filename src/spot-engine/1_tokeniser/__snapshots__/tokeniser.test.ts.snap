@@ -5,7 +5,7 @@ exports[`Tokeniser Specific case Comments 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 3,
     },
     "type": "keyword",
@@ -13,14 +13,14 @@ exports[`Tokeniser Specific case Comments 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 3,
     },
     "symbol": "(",
@@ -28,7 +28,7 @@ exports[`Tokeniser Specific case Comments 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 3,
     },
     "symbol": ")",
@@ -36,8 +36,8 @@ exports[`Tokeniser Specific case Comments 1`] = `
   },
   {
     "location": {
-      "column": 3,
-      "line": 4,
+      "column": 13,
+      "line": 3,
     },
     "symbol": "{",
     "type": "symbol",
@@ -53,7 +53,7 @@ exports[`Tokeniser Specific case Comments 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 6,
+      "line": 5,
     },
     "symbol": "}",
     "type": "symbol",
@@ -66,7 +66,7 @@ exports[`Tokeniser Specific case Floats 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -74,14 +74,14 @@ exports[`Tokeniser Specific case Floats 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -89,7 +89,7 @@ exports[`Tokeniser Specific case Floats 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -97,8 +97,8 @@ exports[`Tokeniser Specific case Floats 1`] = `
   },
   {
     "location": {
-      "column": 3,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -106,7 +106,7 @@ exports[`Tokeniser Specific case Floats 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 7,
+      "column": 3,
       "line": 3,
     },
     "type": "keyword",
@@ -114,14 +114,14 @@ exports[`Tokeniser Specific case Floats 1`] = `
   {
     "identifier": "num",
     "location": {
-      "column": 11,
+      "column": 7,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 3,
     },
     "symbol": "=",
@@ -138,7 +138,7 @@ exports[`Tokeniser Specific case Floats 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 5,
+      "line": 4,
     },
     "symbol": "}",
     "type": "symbol",
@@ -151,7 +151,7 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -159,14 +159,14 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -174,7 +174,7 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -182,8 +182,8 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   },
   {
     "location": {
-      "column": 3,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -191,7 +191,7 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 7,
+      "column": 3,
       "line": 3,
     },
     "type": "keyword",
@@ -199,14 +199,14 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   {
     "identifier": "num",
     "location": {
-      "column": 11,
+      "column": 7,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 3,
     },
     "symbol": "=",
@@ -214,7 +214,7 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   },
   {
     "location": {
-      "column": 14,
+      "column": 13,
       "line": 3,
     },
     "symbol": "(",
@@ -230,7 +230,7 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   },
   {
     "location": {
-      "column": 20,
+      "column": 18,
       "line": 3,
     },
     "symbol": "+",
@@ -246,7 +246,7 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   },
   {
     "location": {
-      "column": 25,
+      "column": 23,
       "line": 3,
     },
     "symbol": ")",
@@ -254,7 +254,7 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   },
   {
     "location": {
-      "column": 27,
+      "column": 25,
       "line": 3,
     },
     "symbol": "-",
@@ -271,7 +271,7 @@ exports[`Tokeniser Specific case Int addition 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 5,
+      "line": 4,
     },
     "symbol": "}",
     "type": "symbol",
@@ -284,7 +284,7 @@ exports[`Tokeniser Specific case Integers 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -292,14 +292,14 @@ exports[`Tokeniser Specific case Integers 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -307,7 +307,7 @@ exports[`Tokeniser Specific case Integers 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -315,8 +315,8 @@ exports[`Tokeniser Specific case Integers 1`] = `
   },
   {
     "location": {
-      "column": 3,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -324,7 +324,7 @@ exports[`Tokeniser Specific case Integers 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 7,
+      "column": 3,
       "line": 3,
     },
     "type": "keyword",
@@ -332,14 +332,14 @@ exports[`Tokeniser Specific case Integers 1`] = `
   {
     "identifier": "num",
     "location": {
-      "column": 11,
+      "column": 7,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 3,
     },
     "symbol": "=",
@@ -356,7 +356,7 @@ exports[`Tokeniser Specific case Integers 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 5,
+      "line": 4,
     },
     "symbol": "}",
     "type": "symbol",
@@ -369,7 +369,7 @@ exports[`Tokeniser Specific case Reads hello world example 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 3,
     },
     "type": "keyword",
@@ -377,14 +377,14 @@ exports[`Tokeniser Specific case Reads hello world example 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 3,
     },
     "symbol": "(",
@@ -392,7 +392,7 @@ exports[`Tokeniser Specific case Reads hello world example 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 3,
     },
     "symbol": ")",
@@ -400,8 +400,8 @@ exports[`Tokeniser Specific case Reads hello world example 1`] = `
   },
   {
     "location": {
-      "column": 3,
-      "line": 4,
+      "column": 13,
+      "line": 3,
     },
     "symbol": "{",
     "type": "symbol",
@@ -409,14 +409,14 @@ exports[`Tokeniser Specific case Reads hello world example 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 8,
+      "column": 3,
       "line": 4,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 9,
+      "column": 8,
       "line": 4,
     },
     "symbol": "(",
@@ -432,8 +432,8 @@ exports[`Tokeniser Specific case Reads hello world example 1`] = `
   },
   {
     "location": {
-      "column": 1,
-      "line": 5,
+      "column": 24,
+      "line": 4,
     },
     "symbol": ")",
     "type": "symbol",
@@ -441,7 +441,7 @@ exports[`Tokeniser Specific case Reads hello world example 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 6,
+      "line": 5,
     },
     "symbol": "}",
     "type": "symbol",
@@ -454,7 +454,7 @@ exports[`Tokeniser Specific case String addition 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -462,14 +462,14 @@ exports[`Tokeniser Specific case String addition 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -477,7 +477,7 @@ exports[`Tokeniser Specific case String addition 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -485,8 +485,8 @@ exports[`Tokeniser Specific case String addition 1`] = `
   },
   {
     "location": {
-      "column": 3,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -494,7 +494,7 @@ exports[`Tokeniser Specific case String addition 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 7,
+      "column": 3,
       "line": 3,
     },
     "type": "keyword",
@@ -502,14 +502,14 @@ exports[`Tokeniser Specific case String addition 1`] = `
   {
     "identifier": "name",
     "location": {
-      "column": 12,
+      "column": 7,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 14,
+      "column": 12,
       "line": 3,
     },
     "symbol": "=",
@@ -525,7 +525,7 @@ exports[`Tokeniser Specific case String addition 1`] = `
   },
   {
     "location": {
-      "column": 23,
+      "column": 21,
       "line": 3,
     },
     "symbol": "+",
@@ -542,7 +542,7 @@ exports[`Tokeniser Specific case String addition 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 5,
+      "line": 4,
     },
     "symbol": "}",
     "type": "symbol",
@@ -555,7 +555,7 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -563,14 +563,14 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -578,7 +578,7 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -586,8 +586,8 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   },
   {
     "location": {
-      "column": 3,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -595,7 +595,7 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 7,
+      "column": 3,
       "line": 3,
     },
     "type": "keyword",
@@ -603,14 +603,14 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "identifier": "first_name",
     "location": {
-      "column": 18,
+      "column": 7,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 20,
+      "column": 18,
       "line": 3,
     },
     "symbol": "=",
@@ -627,7 +627,7 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 7,
+      "column": 3,
       "line": 4,
     },
     "type": "keyword",
@@ -635,14 +635,14 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "identifier": "last_name",
     "location": {
-      "column": 17,
+      "column": 7,
       "line": 4,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 19,
+      "column": 17,
       "line": 4,
     },
     "symbol": "=",
@@ -659,7 +659,7 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 7,
+      "column": 3,
       "line": 6,
     },
     "type": "keyword",
@@ -667,14 +667,14 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "identifier": "name",
     "location": {
-      "column": 12,
+      "column": 7,
       "line": 6,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 14,
+      "column": 12,
       "line": 6,
     },
     "symbol": "=",
@@ -683,14 +683,14 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "identifier": "first_name",
     "location": {
-      "column": 25,
+      "column": 14,
       "line": 6,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 27,
+      "column": 25,
       "line": 6,
     },
     "symbol": "+",
@@ -706,7 +706,7 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   },
   {
     "location": {
-      "column": 33,
+      "column": 31,
       "line": 6,
     },
     "symbol": "+",
@@ -715,15 +715,15 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
   {
     "identifier": "last_name",
     "location": {
-      "column": 1,
-      "line": 7,
+      "column": 33,
+      "line": 6,
     },
     "type": "identifier",
   },
   {
     "location": {
       "column": 1,
-      "line": 8,
+      "line": 7,
     },
     "symbol": "}",
     "type": "symbol",
@@ -736,7 +736,7 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 3,
     },
     "type": "keyword",
@@ -744,14 +744,14 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 3,
     },
     "symbol": "(",
@@ -759,7 +759,7 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 3,
     },
     "symbol": ")",
@@ -767,8 +767,8 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   },
   {
     "location": {
-      "column": 3,
-      "line": 4,
+      "column": 13,
+      "line": 3,
     },
     "symbol": "{",
     "type": "symbol",
@@ -776,7 +776,7 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 7,
+      "column": 3,
       "line": 4,
     },
     "type": "keyword",
@@ -784,14 +784,14 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   {
     "identifier": "name",
     "location": {
-      "column": 12,
+      "column": 7,
       "line": 4,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 14,
+      "column": 12,
       "line": 4,
     },
     "symbol": "=",
@@ -808,14 +808,14 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 8,
+      "column": 3,
       "line": 5,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 9,
+      "column": 8,
       "line": 5,
     },
     "symbol": "(",
@@ -831,8 +831,8 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   },
   {
     "location": {
-      "column": 1,
-      "line": 6,
+      "column": 24,
+      "line": 5,
     },
     "symbol": ")",
     "type": "symbol",
@@ -840,7 +840,7 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 7,
+      "line": 6,
     },
     "symbol": "}",
     "type": "symbol",
@@ -853,7 +853,7 @@ exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -861,14 +861,14 @@ exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -876,7 +876,7 @@ exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -884,8 +884,8 @@ exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
   },
   {
     "location": {
-      "column": 5,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -893,14 +893,14 @@ exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 10,
+      "column": 5,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 3,
     },
     "symbol": "(",
@@ -916,8 +916,8 @@ exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
   },
   {
     "location": {
-      "column": 1,
-      "line": 4,
+      "column": 26,
+      "line": 3,
     },
     "symbol": ")",
     "type": "symbol",
@@ -925,7 +925,7 @@ exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 5,
+      "line": 4,
     },
     "symbol": "}",
     "type": "symbol",
@@ -938,7 +938,7 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -946,14 +946,14 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -961,7 +961,7 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -969,8 +969,8 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   },
   {
     "location": {
-      "column": 5,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -978,7 +978,7 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 9,
+      "column": 5,
       "line": 3,
     },
     "type": "keyword",
@@ -986,14 +986,14 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   {
     "identifier": "name",
     "location": {
-      "column": 14,
+      "column": 9,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 16,
+      "column": 14,
       "line": 3,
     },
     "symbol": "=",
@@ -1010,7 +1010,7 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 9,
+      "column": 5,
       "line": 4,
     },
     "type": "keyword",
@@ -1018,14 +1018,14 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   {
     "identifier": "age",
     "location": {
-      "column": 13,
+      "column": 9,
       "line": 4,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 15,
+      "column": 13,
       "line": 4,
     },
     "symbol": "=",
@@ -1042,14 +1042,14 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 10,
+      "column": 5,
       "line": 6,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 6,
     },
     "symbol": "(",
@@ -1065,8 +1065,8 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   },
   {
     "location": {
-      "column": 1,
-      "line": 7,
+      "column": 63,
+      "line": 6,
     },
     "symbol": ")",
     "type": "symbol",
@@ -1074,7 +1074,7 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
   {
     "location": {
       "column": 1,
-      "line": 8,
+      "line": 7,
     },
     "symbol": "}",
     "type": "symbol",
@@ -1087,7 +1087,7 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -1095,14 +1095,14 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -1110,7 +1110,7 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -1118,8 +1118,8 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   },
   {
     "location": {
-      "column": 5,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -1127,7 +1127,7 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 9,
+      "column": 5,
       "line": 3,
     },
     "type": "keyword",
@@ -1135,14 +1135,14 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   {
     "identifier": "sum",
     "location": {
-      "column": 13,
+      "column": 9,
       "line": 3,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 15,
+      "column": 13,
       "line": 3,
     },
     "symbol": "=",
@@ -1158,7 +1158,7 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   },
   {
     "location": {
-      "column": 19,
+      "column": 17,
       "line": 3,
     },
     "symbol": "+",
@@ -1175,14 +1175,14 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 10,
+      "column": 5,
       "line": 4,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 4,
     },
     "symbol": "(",
@@ -1198,15 +1198,15 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
   },
   {
     "location": {
-      "column": 1,
-      "line": 5,
+      "column": 40,
+      "line": 4,
     },
     "symbol": ")",
     "type": "symbol",
   },
   {
     "location": {
-      "column": 2,
+      "column": 1,
       "line": 5,
     },
     "symbol": "}",
@@ -1220,7 +1220,7 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "keyword": "func",
     "location": {
-      "column": 6,
+      "column": 1,
       "line": 2,
     },
     "type": "keyword",
@@ -1228,14 +1228,14 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "main",
     "location": {
-      "column": 10,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 11,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -1243,7 +1243,7 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   },
   {
     "location": {
-      "column": 13,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -1251,8 +1251,8 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   },
   {
     "location": {
-      "column": 5,
-      "line": 3,
+      "column": 13,
+      "line": 2,
     },
     "symbol": "{",
     "type": "symbol",
@@ -1268,7 +1268,7 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "keyword": "let",
     "location": {
-      "column": 9,
+      "column": 5,
       "line": 4,
     },
     "type": "keyword",
@@ -1276,14 +1276,14 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "isAuthorized",
     "location": {
-      "column": 22,
+      "column": 9,
       "line": 4,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 24,
+      "column": 22,
       "line": 4,
     },
     "symbol": "=",
@@ -1292,15 +1292,15 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "True",
     "location": {
-      "column": 5,
-      "line": 6,
+      "column": 24,
+      "line": 4,
     },
     "type": "identifier",
   },
   {
     "keyword": "if",
     "location": {
-      "column": 8,
+      "column": 5,
       "line": 6,
     },
     "type": "keyword",
@@ -1308,15 +1308,15 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "isAuthorized",
     "location": {
-      "column": 21,
+      "column": 8,
       "line": 6,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 9,
-      "line": 7,
+      "column": 21,
+      "line": 6,
     },
     "symbol": "{",
     "type": "symbol",
@@ -1324,14 +1324,14 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 14,
+      "column": 9,
       "line": 7,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 15,
+      "column": 14,
       "line": 7,
     },
     "symbol": "(",
@@ -1347,15 +1347,15 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   },
   {
     "location": {
-      "column": 5,
-      "line": 8,
+      "column": 32,
+      "line": 7,
     },
     "symbol": ")",
     "type": "symbol",
   },
   {
     "location": {
-      "column": 7,
+      "column": 5,
       "line": 8,
     },
     "symbol": "}",
@@ -1364,15 +1364,15 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "keyword": "else",
     "location": {
-      "column": 12,
+      "column": 7,
       "line": 8,
     },
     "type": "keyword",
   },
   {
     "location": {
-      "column": 9,
-      "line": 9,
+      "column": 12,
+      "line": 8,
     },
     "symbol": "{",
     "type": "symbol",
@@ -1380,14 +1380,14 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 14,
+      "column": 9,
       "line": 9,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 15,
+      "column": 14,
       "line": 9,
     },
     "symbol": "(",
@@ -1403,8 +1403,8 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   },
   {
     "location": {
-      "column": 5,
-      "line": 10,
+      "column": 31,
+      "line": 9,
     },
     "symbol": ")",
     "type": "symbol",
@@ -1412,7 +1412,7 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "location": {
       "column": 5,
-      "line": 12,
+      "line": 10,
     },
     "symbol": "}",
     "type": "symbol",
@@ -1420,14 +1420,14 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "keyword": "if",
     "location": {
-      "column": 8,
+      "column": 5,
       "line": 12,
     },
     "type": "keyword",
   },
   {
     "location": {
-      "column": 9,
+      "column": 8,
       "line": 12,
     },
     "symbol": "!",
@@ -1436,15 +1436,15 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "isAuthorized",
     "location": {
-      "column": 22,
+      "column": 9,
       "line": 12,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 9,
-      "line": 13,
+      "column": 22,
+      "line": 12,
     },
     "symbol": "{",
     "type": "symbol",
@@ -1452,14 +1452,14 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 14,
+      "column": 9,
       "line": 13,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 15,
+      "column": 14,
       "line": 13,
     },
     "symbol": "(",
@@ -1475,15 +1475,15 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   },
   {
     "location": {
-      "column": 5,
-      "line": 14,
+      "column": 35,
+      "line": 13,
     },
     "symbol": ")",
     "type": "symbol",
   },
   {
     "location": {
-      "column": 7,
+      "column": 5,
       "line": 14,
     },
     "symbol": "}",
@@ -1492,15 +1492,15 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "keyword": "else",
     "location": {
-      "column": 12,
+      "column": 7,
       "line": 14,
     },
     "type": "keyword",
   },
   {
     "location": {
-      "column": 9,
-      "line": 15,
+      "column": 12,
+      "line": 14,
     },
     "symbol": "{",
     "type": "symbol",
@@ -1508,14 +1508,14 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   {
     "identifier": "print",
     "location": {
-      "column": 14,
+      "column": 9,
       "line": 15,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 15,
+      "column": 14,
       "line": 15,
     },
     "symbol": "(",
@@ -1531,23 +1531,23 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   },
   {
     "location": {
-      "column": 5,
-      "line": 16,
+      "column": 34,
+      "line": 15,
     },
     "symbol": ")",
     "type": "symbol",
   },
   {
     "location": {
-      "column": 1,
-      "line": 17,
+      "column": 5,
+      "line": 16,
     },
     "symbol": "}",
     "type": "symbol",
   },
   {
     "location": {
-      "column": 2,
+      "column": 1,
       "line": 17,
     },
     "symbol": "}",

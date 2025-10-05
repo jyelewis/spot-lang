@@ -1,140 +1,206 @@
-import { spotKeywords, spotSymbols, SpotToken } from './SpotToken';
+import { spotKeywords, spotSymbols, SpotToken, TOKEN_TYPES } from './SpotToken';
 import { StringReader } from './StringReader';
 import assert from 'node:assert';
 
 export function tokeniseCode(code: string): SpotToken[] {
-  const codeReader = new StringReader(code);
-  const tokens: SpotToken[] = [];
-  while (!codeReader.isEOF) {
-    // try to match comments
-    if (codeReader.peak('//')) {
-      const commentLocation = codeReader.cloneLocation();
+  const tokeniser = new Tokeniser(code);
+  return tokeniser.tokenise();
+}
 
-      // rest of the line is a comment
-      codeReader.consume('//');
-      const commentText = codeReader.restOfCurrentLine;
-      codeReader.consume(commentText);
-      tokens.push({
-        type: 'comment',
-        location: commentLocation,
-        comment: commentText,
-      });
-    }
+class Tokeniser {
+  private codeReader: StringReader;
+  private tokens: SpotToken[] = [];
 
-    // try to match keyword tokens
-    let foundKeyword = false;
-    for (const keyword of spotKeywords) {
-      if (codeReader.consume(keyword)) {
-        foundKeyword = true;
-        tokens.push({
-          type: 'keyword',
-          location: codeReader.cloneLocation(),
-          keyword,
-        });
-        break;
-      }
-    }
-
-    if (foundKeyword) {
-      continue;
-    }
-
-    // try to match identifier tokens
-    const identifierMatch = codeReader.restOfCurrentLine.match(/^([A-Za-z_][A-Z-a-z0-9_]+)/);
-    if (identifierMatch) {
-      const identifier = identifierMatch[0];
-      codeReader.consume(identifier);
-      tokens.push({
-        type: 'identifier',
-        location: codeReader.cloneLocation(),
-        identifier,
-      });
-      continue;
-    }
-
-    let foundSymbol = false;
-    for (const symbol of spotSymbols) {
-      if (codeReader.consume(symbol)) {
-        tokens.push({
-          type: 'symbol',
-          location: codeReader.cloneLocation(),
-          symbol,
-        });
-        foundSymbol = true;
-        break;
-      }
-    }
-
-    if (foundSymbol) {
-      continue;
-    }
-
-    // try to read a string literal
-    if (codeReader.peak('"')) {
-      const startLocation = codeReader.cloneLocation();
-
-      // TODO: revisit with more robust string handling
-      const endColumn = codeReader.restOfCurrentLine.substring(1).indexOf('"');
-
-      const literal = codeReader.restOfCurrentLine.substring(1, endColumn + 1);
-      const didConsume = codeReader.consume(`"${literal}"`);
-      assert(didConsume, 'Should have consumed the string literal');
-
-      tokens.push({
-        type: 'string_literal',
-        location: startLocation,
-        literal,
-      });
-      continue;
-    }
-
-    // try to match a float literal
-    const floatMatch = codeReader.restOfCurrentLine.match(/^([0-9]+\.[0-9]+)/);
-    if (floatMatch !== null) {
-      const floatLocation = codeReader.cloneLocation();
-      const floatString = floatMatch[0];
-      const floatValue = parseFloat(floatString);
-      assert(!isNaN(floatValue), 'Should have parsed a float');
-
-      const didConsume = codeReader.consume(floatString);
-      assert(didConsume, 'Should have consumed the float literal');
-
-      tokens.push({
-        type: 'float',
-        location: floatLocation,
-        float: floatValue,
-      });
-      continue;
-    }
-
-    // try to read an integer literal
-    const intMatch = codeReader.restOfCurrentLine.match(/^([0-9]+)/);
-    if (intMatch !== null) {
-      const intLocation = codeReader.cloneLocation();
-      const intString = intMatch[0];
-      const intValue = parseInt(intString, 10);
-      assert(!isNaN(intValue), 'Should have parsed an integer');
-
-      const didConsume = codeReader.consume(intString);
-      assert(didConsume, 'Should have consumed the integer literal');
-
-      tokens.push({
-        type: 'int',
-        location: intLocation,
-        int: intValue,
-      });
-      continue;
-    }
-
-    throw new Error(
-      'Unrecognised token at ' +
-        JSON.stringify(codeReader.cloneLocation()) +
-        ': "' +
-        codeReader.restOfCurrentLine.slice(0, 10) +
-        '"' +
-        (codeReader.restOfCurrentLine.length > 10 ? '...' : '')
-    );
+  constructor(code: string) {
+    this.codeReader = new StringReader(code);
   }
 
-  return tokens;
+  tokenise(): SpotToken[] {
+    while (!this.codeReader.isEOF) {
+      if (this.tryMatchComment()) continue;
+      if (this.tryMatchKeyword()) continue;
+      if (this.tryMatchIdentifier()) continue;
+      if (this.tryMatchSymbol()) continue;
+      if (this.tryMatchStringLiteral()) continue;
+      if (this.tryMatchNumber()) continue;
+
+      this.throwUnrecognizedTokenError();
+    }
+    return this.tokens;
+  }
+
+  private tryMatchComment(): boolean {
+    if (!this.codeReader.peak('//')) return false;
+
+    const commentLocation = this.codeReader.cloneLocation();
+    this.codeReader.consume('//');
+    const commentText = this.codeReader.restOfCurrentLine;
+    this.codeReader.consume(commentText);
+
+    this.tokens.push({
+      type: TOKEN_TYPES.COMMENT,
+      location: commentLocation,
+      comment: commentText,
+    });
+    return true;
+  }
+
+  private tryMatchKeyword(): boolean {
+    for (const keyword of spotKeywords) {
+      if (this.codeReader.peak(keyword)) {
+        const location = this.codeReader.cloneLocation();
+        this.codeReader.consume(keyword);
+        this.tokens.push({
+          type: TOKEN_TYPES.KEYWORD,
+          location,
+          keyword,
+        });
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private tryMatchIdentifier(): boolean {
+    // Fixed regex: should not match identifiers starting with numbers
+    const identifierMatch = this.codeReader.restOfCurrentLine.match(/^([A-Za-z_][A-Za-z0-9_]*)/);
+    if (!identifierMatch) return false;
+
+    const identifier = identifierMatch[0];
+
+    // Ensure identifier isn't a keyword that was missed
+    if ((spotKeywords as readonly string[]).includes(identifier)) {
+      return false; // Let keyword matcher handle it
+    }
+
+    const location = this.codeReader.cloneLocation();
+    this.codeReader.consume(identifier);
+    this.tokens.push({
+      type: TOKEN_TYPES.IDENTIFIER,
+      location,
+      identifier,
+    });
+    return true;
+  }
+
+  private tryMatchSymbol(): boolean {
+    for (const symbol of spotSymbols) {
+      if (this.codeReader.peak(symbol)) {
+        const location = this.codeReader.cloneLocation();
+        this.codeReader.consume(symbol);
+        this.tokens.push({
+          type: TOKEN_TYPES.SYMBOL,
+          location,
+          symbol,
+        });
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private tryMatchStringLiteral(): boolean {
+    if (!this.codeReader.peak('"')) return false;
+
+    const startLocation = this.codeReader.cloneLocation();
+    this.codeReader.moveAheadBy(1); // consume opening quote
+
+    let literal = '';
+    while (!this.codeReader.isEOF && !this.codeReader.peak('"')) {
+      const char = this.codeReader.restOfCurrentLine.charAt(0);
+      if (char === '\\') {
+        // Handle escape sequences
+        this.codeReader.moveAheadBy(1);
+        if (this.codeReader.isEOF) {
+          throw new Error(
+            `Unterminated string literal at line ${startLocation.line}, column ${startLocation.column}`
+          );
+        }
+        const escapedChar = this.codeReader.restOfCurrentLine.charAt(0);
+        literal += this.processEscapeSequence(escapedChar);
+        this.codeReader.moveAheadBy(1);
+      } else {
+        literal += char;
+        this.codeReader.moveAheadBy(1);
+      }
+    }
+
+    if (this.codeReader.isEOF) {
+      throw new Error(
+        `Unterminated string literal at line ${startLocation.line}, column ${startLocation.column}`
+      );
+    }
+
+    this.codeReader.moveAheadBy(1); // consume closing quote
+    this.codeReader.consumeWhitespace(); // consume trailing whitespace
+
+    this.tokens.push({
+      type: TOKEN_TYPES.STRING_LITERAL,
+      location: startLocation,
+      literal,
+    });
+    return true;
+  }
+
+  private processEscapeSequence(char: string): string {
+    switch (char) {
+      case 'n':
+        return '\n';
+      case 't':
+        return '\t';
+      case 'r':
+        return '\r';
+      case '\\':
+        return '\\';
+      case '"':
+        return '"';
+      case '0':
+        return '\0';
+      default:
+        // For unknown escape sequences, just return the character as-is
+        return char;
+    }
+  }
+
+  private tryMatchNumber(): boolean {
+    const numberMatch = this.codeReader.restOfCurrentLine.match(/^(\d+(?:\.\d+)?)/);
+    if (!numberMatch) return false;
+
+    const location = this.codeReader.cloneLocation();
+    const numberString = numberMatch[0];
+    const isFloat = numberString.includes('.');
+
+    this.codeReader.consume(numberString);
+
+    if (isFloat) {
+      const floatValue = parseFloat(numberString);
+      assert(!isNaN(floatValue), 'Should have parsed a float');
+      this.tokens.push({
+        type: TOKEN_TYPES.FLOAT,
+        location,
+        float: floatValue,
+      });
+    } else {
+      const intValue = parseInt(numberString, 10);
+      assert(!isNaN(intValue), 'Should have parsed an integer');
+      this.tokens.push({
+        type: TOKEN_TYPES.INT,
+        location,
+        int: intValue,
+      });
+    }
+
+    return true;
+  }
+
+  private throwUnrecognizedTokenError(): never {
+    const location = this.codeReader.cloneLocation();
+    const context = this.codeReader.restOfCurrentLine.slice(0, 20);
+    const char = this.codeReader.restOfCurrentLine.charAt(0);
+
+    throw new Error(
+      `Unexpected character '${char}' at line ${location.line}, column ${location.column}\n` +
+        `Context: "${context}${context.length === 20 ? '...' : ''}"`
+    );
+  }
 }

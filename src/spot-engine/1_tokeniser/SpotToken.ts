@@ -28,7 +28,29 @@ export interface SpotTokenKeyword extends SpotTokenBase<'keyword'> {
   keyword: SpotKeyword;
 }
 
+// Token type constants to avoid string duplication
+export const TOKEN_TYPES = {
+  COMMENT: 'comment',
+  KEYWORD: 'keyword',
+  SYMBOL: 'symbol',
+  IDENTIFIER: 'identifier',
+  STRING_TEMPLATE_START: 'string_template_start',
+  STRING_LITERAL: 'string_literal',
+  STRING_TEMPLATE_EXPRESSION_START: 'string_template_expression_start',
+  STRING_TEMPLATE_EXPRESSION_END: 'string_template_expression_end',
+  STRING_TEMPLATE_END: 'string_template_end',
+  INT: 'int',
+  FLOAT: 'float',
+} as const;
+
+// Symbols ordered by length (longest first) to avoid incorrect tokenisation
 export const spotSymbols = [
+  '==',
+  '!=',
+  '<=',
+  '>=',
+  '&&',
+  '||',
   '(',
   ')',
   '{',
@@ -43,12 +65,6 @@ export const spotSymbols = [
   '<',
   '>',
   '!',
-  '==',
-  '!=',
-  '<=',
-  '>=',
-  '&&',
-  '||',
   '.',
   '[',
   ']',
