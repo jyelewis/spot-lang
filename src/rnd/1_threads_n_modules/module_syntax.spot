@@ -1,3 +1,6 @@
+import "./common.spot"
+
+@@RestApi("/users/")
 
 module UserService {
     func get_username(user_id) -> String {
@@ -29,7 +32,7 @@ module MockUserService implements UserService {
     }
 }
 
-@TestSuite
+@Asdf()
 module UserControllerTest {
     import UserController
     import MockUserService as UserService
