@@ -4,7 +4,6 @@
   "description": "Hobby programming language 'spot'",
   "private": true,
   "scripts": {
-    "execute": "tsx src/spot-engine/index.ts",
     "build": "yarn workspaces run build",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -13,7 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "dev": "tsx src/spot-engine/index.ts",
+    "start": "tsx src/spot-engine/index.ts",
     "checkall": "yarn format && yarn lint && yarn typecheck && yarn test",
     "precommit": "yarn checkall"
   },
