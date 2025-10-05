@@ -61,6 +61,25 @@ exports[`Tokeniser Specific case Comments 1`] = `
 ]
 `;
 
+exports[`Tokeniser Specific case Empty string template 1`] = `
+[
+  {
+    "location": {
+      "column": 1,
+      "line": 1,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 1,
+    },
+    "type": "string_template_end",
+  },
+]
+`;
+
 exports[`Tokeniser Specific case Floats 1`] = `
 [
   {
@@ -423,12 +442,26 @@ exports[`Tokeniser Specific case Reads hello world example 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "Hello, World!",
     "location": {
       "column": 9,
       "line": 4,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Hello, World!",
+    "location": {
+      "column": 23,
+      "line": 4,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 24,
+      "line": 4,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -516,12 +549,26 @@ exports[`Tokeniser Specific case String addition 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "John",
     "location": {
       "column": 14,
       "line": 3,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "John",
+    "location": {
+      "column": 19,
+      "line": 3,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 21,
+      "line": 3,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -532,9 +579,16 @@ exports[`Tokeniser Specific case String addition 1`] = `
     "type": "symbol",
   },
   {
-    "literal": " Doe",
     "location": {
       "column": 23,
+      "line": 3,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "literal": " Doe",
+    "location": {
+      "column": 28,
       "line": 3,
     },
     "type": "string_literal",
@@ -544,8 +598,321 @@ exports[`Tokeniser Specific case String addition 1`] = `
       "column": 1,
       "line": 4,
     },
+    "type": "string_template_end",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 4,
+    },
     "symbol": "}",
     "type": "symbol",
+  },
+]
+`;
+
+exports[`Tokeniser Specific case String template with nested expressions 1`] = `
+[
+  {
+    "location": {
+      "column": 1,
+      "line": 1,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Result: ",
+    "location": {
+      "column": 10,
+      "line": 1,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 10,
+      "line": 1,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "add",
+    "location": {
+      "column": 11,
+      "line": 1,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 14,
+      "line": 1,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "identifier": "x",
+    "location": {
+      "column": 15,
+      "line": 1,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 16,
+      "line": 1,
+    },
+    "symbol": ",",
+    "type": "symbol",
+  },
+  {
+    "identifier": "y",
+    "location": {
+      "column": 18,
+      "line": 1,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 19,
+      "line": 1,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 21,
+      "line": 1,
+    },
+    "symbol": "+",
+    "type": "symbol",
+  },
+  {
+    "int": 1,
+    "location": {
+      "column": 23,
+      "line": 1,
+    },
+    "type": "int",
+  },
+  {
+    "location": {
+      "column": 24,
+      "line": 1,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "location": {
+      "column": 26,
+      "line": 1,
+    },
+    "type": "string_template_end",
+  },
+]
+`;
+
+exports[`Tokeniser Specific case String templates with expressions 1`] = `
+[
+  {
+    "location": {
+      "column": 1,
+      "line": 1,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "hello ",
+    "location": {
+      "column": 8,
+      "line": 1,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 8,
+      "line": 1,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "name",
+    "location": {
+      "column": 9,
+      "line": 1,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 1,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "literal": "!",
+    "location": {
+      "column": 15,
+      "line": 1,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 16,
+      "line": 1,
+    },
+    "type": "string_template_end",
+  },
+]
+`;
+
+exports[`Tokeniser Specific case String templates with multiple expressions 1`] = `
+[
+  {
+    "location": {
+      "column": 1,
+      "line": 1,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Hello ",
+    "location": {
+      "column": 8,
+      "line": 1,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 8,
+      "line": 1,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "firstName",
+    "location": {
+      "column": 9,
+      "line": 1,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 18,
+      "line": 1,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "literal": " ",
+    "location": {
+      "column": 20,
+      "line": 1,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 20,
+      "line": 1,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "lastName",
+    "location": {
+      "column": 21,
+      "line": 1,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 29,
+      "line": 1,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "literal": ", you are ",
+    "location": {
+      "column": 40,
+      "line": 1,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 40,
+      "line": 1,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "age",
+    "location": {
+      "column": 41,
+      "line": 1,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 44,
+      "line": 1,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "literal": " years old!",
+    "location": {
+      "column": 56,
+      "line": 1,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 57,
+      "line": 1,
+    },
+    "type": "string_template_end",
+  },
+]
+`;
+
+exports[`Tokeniser Specific case String templates without expressions 1`] = `
+[
+  {
+    "location": {
+      "column": 1,
+      "line": 1,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "hello world",
+    "location": {
+      "column": 13,
+      "line": 1,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 14,
+      "line": 1,
+    },
+    "type": "string_template_end",
   },
 ]
 `;
@@ -617,12 +984,26 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "John",
     "location": {
       "column": 20,
       "line": 3,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "John",
+    "location": {
+      "column": 25,
+      "line": 3,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 4,
+    },
+    "type": "string_template_end",
   },
   {
     "keyword": "let",
@@ -649,12 +1030,26 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "Doe",
     "location": {
       "column": 19,
       "line": 4,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Doe",
+    "location": {
+      "column": 23,
+      "line": 4,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 6,
+    },
+    "type": "string_template_end",
   },
   {
     "keyword": "let",
@@ -697,12 +1092,26 @@ exports[`Tokeniser Specific case Variable addition 1`] = `
     "type": "symbol",
   },
   {
-    "literal": " ",
     "location": {
       "column": 27,
       "line": 6,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": " ",
+    "location": {
+      "column": 29,
+      "line": 6,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 31,
+      "line": 6,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -798,12 +1207,26 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "John Doe",
     "location": {
       "column": 14,
       "line": 4,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "John Doe",
+    "location": {
+      "column": 23,
+      "line": 4,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 3,
+      "line": 5,
+    },
+    "type": "string_template_end",
   },
   {
     "identifier": "print",
@@ -822,12 +1245,26 @@ exports[`Tokeniser Specific case Variable definitions 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "Hello, World!",
     "location": {
       "column": 9,
       "line": 5,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Hello, World!",
+    "location": {
+      "column": 23,
+      "line": 5,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 24,
+      "line": 5,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -907,12 +1344,26 @@ exports[`Tokeniser code_examples folder Tokenises '0_print_hello.spot 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "Hello, world!",
     "location": {
       "column": 11,
       "line": 3,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Hello, world!",
+    "location": {
+      "column": 25,
+      "line": 3,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 26,
+      "line": 3,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -1000,12 +1451,26 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "John Doe",
     "location": {
       "column": 16,
       "line": 3,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "John Doe",
+    "location": {
+      "column": 25,
+      "line": 3,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 4,
+    },
+    "type": "string_template_end",
   },
   {
     "keyword": "let",
@@ -1056,12 +1521,86 @@ exports[`Tokeniser code_examples folder Tokenises '1_variables.spot 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "Hello, my name is {name} and I am {age} years old.",
     "location": {
       "column": 11,
       "line": 6,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Hello, my name is ",
+    "location": {
+      "column": 30,
+      "line": 6,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 30,
+      "line": 6,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "name",
+    "location": {
+      "column": 31,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 35,
+      "line": 6,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "literal": " and I am ",
+    "location": {
+      "column": 46,
+      "line": 6,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 46,
+      "line": 6,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "age",
+    "location": {
+      "column": 47,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 50,
+      "line": 6,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "literal": " years old.",
+    "location": {
+      "column": 62,
+      "line": 6,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 63,
+      "line": 6,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -1189,12 +1728,48 @@ exports[`Tokeniser code_examples folder Tokenises '2_addition.spot 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "The sum of 2 and 3 is {sum}",
     "location": {
       "column": 11,
       "line": 4,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "The sum of 2 and 3 is ",
+    "location": {
+      "column": 34,
+      "line": 4,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 34,
+      "line": 4,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "sum",
+    "location": {
+      "column": 35,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 38,
+      "line": 4,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "location": {
+      "column": 40,
+      "line": 4,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -1338,12 +1913,26 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "Access granted.",
     "location": {
       "column": 15,
       "line": 7,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Access granted.",
+    "location": {
+      "column": 31,
+      "line": 7,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 32,
+      "line": 7,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -1394,12 +1983,26 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "Access denied.",
     "location": {
       "column": 15,
       "line": 9,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Access denied.",
+    "location": {
+      "column": 30,
+      "line": 9,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 31,
+      "line": 9,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -1466,12 +2069,26 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "isAuthorized False",
     "location": {
       "column": 15,
       "line": 13,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "isAuthorized False",
+    "location": {
+      "column": 34,
+      "line": 13,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 35,
+      "line": 13,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {
@@ -1522,12 +2139,26 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
     "type": "symbol",
   },
   {
-    "literal": "isAuthorized True",
     "location": {
       "column": 15,
       "line": 15,
     },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "isAuthorized True",
+    "location": {
+      "column": 33,
+      "line": 15,
+    },
     "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 34,
+      "line": 15,
+    },
+    "type": "string_template_end",
   },
   {
     "location": {

@@ -118,6 +118,34 @@ func main() {
       expect(tokens).toMatchSnapshot();
     });
 
-    // TODO: parsed string template support
+    it('String templates with expressions', () => {
+      const code = `"hello {name}!"`;
+      const tokens = tokeniseCode(code);
+      expect(tokens).toMatchSnapshot();
+    });
+
+    it('String templates without expressions', () => {
+      const code = `"hello world"`;
+      const tokens = tokeniseCode(code);
+      expect(tokens).toMatchSnapshot();
+    });
+
+    it('String templates with multiple expressions', () => {
+      const code = `"Hello {firstName} {lastName}, you are {age} years old!"`;
+      const tokens = tokeniseCode(code);
+      expect(tokens).toMatchSnapshot();
+    });
+
+    it('Empty string template', () => {
+      const code = `""`;
+      const tokens = tokeniseCode(code);
+      expect(tokens).toMatchSnapshot();
+    });
+
+    it('String template with nested expressions', () => {
+      const code = `"Result: {add(x, y) + 1}"`;
+      const tokens = tokeniseCode(code);
+      expect(tokens).toMatchSnapshot();
+    });
   });
 });

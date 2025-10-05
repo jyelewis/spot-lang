@@ -42,8 +42,16 @@ export interface SpotExpressionStringLiteral {
   string: string;
 }
 
+export interface SpotExpressionStringTemplate {
+  type: 'string_template';
+  location: CodeLocation;
+
+  parts: (SpotExpressionStringLiteral | SpotExpression)[];
+}
+
 export type SpotExpression =
   | SpotExpressionFunctionDefinition
   | SpotExpressionVariableIdentifier
   | SpotExpressionFunctionCall
-  | SpotExpressionStringLiteral;
+  | SpotExpressionStringLiteral
+  | SpotExpressionStringTemplate;

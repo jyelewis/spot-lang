@@ -21,7 +21,7 @@ class Tokeniser {
       if (this.tryMatchKeyword()) continue;
       if (this.tryMatchIdentifier()) continue;
       if (this.tryMatchSymbol()) continue;
-      if (this.tryMatchStringLiteral()) continue;
+      if (this.tryMatchStringTemplate()) continue;
       if (this.tryMatchNumber()) continue;
 
       this.throwUnrecognizedTokenError();
@@ -99,26 +99,73 @@ class Tokeniser {
     return false;
   }
 
-  private tryMatchStringLiteral(): boolean {
+  private tryMatchStringTemplate(): boolean {
     if (!this.codeReader.peak('"')) return false;
 
     const startLocation = this.codeReader.cloneLocation();
+
+    // Emit string template start token
+    this.tokens.push({
+      type: TOKEN_TYPES.STRING_TEMPLATE_START,
+      location: startLocation,
+    });
+
     this.codeReader.moveAheadBy(1); // consume opening quote
 
     let literal = '';
+
     while (!this.codeReader.isEOF && !this.codeReader.peak('"')) {
       const char = this.codeReader.restOfCurrentLine.charAt(0);
+
       if (char === '\\') {
         // Handle escape sequences
         this.codeReader.moveAheadBy(1);
         if (this.codeReader.isEOF) {
           throw new Error(
-            `Unterminated string literal at line ${startLocation.line}, column ${startLocation.column}`
+            `Unterminated string template at line ${startLocation.line}, column ${startLocation.column}`
           );
         }
         const escapedChar = this.codeReader.restOfCurrentLine.charAt(0);
         literal += this.processEscapeSequence(escapedChar);
         this.codeReader.moveAheadBy(1);
+      } else if (char === '{') {
+        // Found start of expression - emit current literal if any
+        if (literal.length > 0) {
+          this.tokens.push({
+            type: TOKEN_TYPES.STRING_LITERAL,
+            location: this.codeReader.cloneLocation(),
+            literal,
+          });
+          literal = '';
+        }
+
+        // Emit expression start token
+        const exprStartLocation = this.codeReader.cloneLocation();
+        this.tokens.push({
+          type: TOKEN_TYPES.STRING_TEMPLATE_EXPRESSION_START,
+          location: exprStartLocation,
+        });
+
+        this.codeReader.moveAheadBy(1); // consume '{'
+        this.codeReader.consumeWhitespace(); // consume any whitespace after '{'
+
+        // Parse the expression inside {}
+        this.parseStringTemplateExpression();
+
+        // Consume '}' and emit expression end token
+        if (!this.codeReader.peak('}')) {
+          throw new Error(
+            `Expected '}' to close expression in string template at line ${exprStartLocation.line}, column ${exprStartLocation.column}`
+          );
+        }
+
+        const exprEndLocation = this.codeReader.cloneLocation();
+        this.tokens.push({
+          type: TOKEN_TYPES.STRING_TEMPLATE_EXPRESSION_END,
+          location: exprEndLocation,
+        });
+
+        this.codeReader.moveAheadBy(1); // consume '}'
       } else {
         literal += char;
         this.codeReader.moveAheadBy(1);
@@ -127,19 +174,59 @@ class Tokeniser {
 
     if (this.codeReader.isEOF) {
       throw new Error(
-        `Unterminated string literal at line ${startLocation.line}, column ${startLocation.column}`
+        `Unterminated string template at line ${startLocation.line}, column ${startLocation.column}`
       );
+    }
+
+    // Emit final literal if any
+    if (literal.length > 0) {
+      this.tokens.push({
+        type: TOKEN_TYPES.STRING_LITERAL,
+        location: this.codeReader.cloneLocation(),
+        literal,
+      });
     }
 
     this.codeReader.moveAheadBy(1); // consume closing quote
     this.codeReader.consumeWhitespace(); // consume trailing whitespace
 
+    // Emit string template end token
     this.tokens.push({
-      type: TOKEN_TYPES.STRING_LITERAL,
-      location: startLocation,
-      literal,
+      type: TOKEN_TYPES.STRING_TEMPLATE_END,
+      location: this.codeReader.cloneLocation(),
     });
+
     return true;
+  }
+
+  private parseStringTemplateExpression(): void {
+    // Parse tokens inside the expression until we hit '}'
+    let braceDepth = 0;
+
+    while (!this.codeReader.isEOF) {
+      // Check if we've hit the closing brace at depth 0
+      if (this.codeReader.peak('}') && braceDepth === 0) {
+        break;
+      }
+
+      // Track nested braces
+      if (this.codeReader.peak('{')) {
+        braceDepth++;
+      } else if (this.codeReader.peak('}')) {
+        braceDepth--;
+      }
+
+      // Parse individual tokens within the expression
+      if (this.tryMatchComment()) continue;
+      if (this.tryMatchKeyword()) continue;
+      if (this.tryMatchIdentifier()) continue;
+      if (this.tryMatchSymbol()) continue;
+      if (this.tryMatchStringTemplate()) continue; // Allow nested string templates
+      if (this.tryMatchNumber()) continue;
+
+      // If we get here, we have an unrecognized character
+      this.throwUnrecognizedTokenError();
+    }
   }
 
   private processEscapeSequence(char: string): string {

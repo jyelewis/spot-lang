@@ -2,9 +2,9 @@ import { SpotToken, SpotTokenKeyword } from '../1_tokeniser/SpotToken';
 import { ParserError } from './ParserError';
 import {
   SpotExpression,
-  SpotExpressionFunctionCall,
   SpotExpressionFunctionDefinition,
   SpotExpressionStringLiteral,
+  SpotExpressionStringTemplate,
 } from './Expressions';
 import { SpotStatement } from './Statements';
 import assert from 'node:assert';
@@ -47,6 +47,8 @@ class Parser {
         return this.parseIdentifier();
       case 'string_literal':
         return this.parseStringLiteral();
+      case 'string_template_start':
+        return this.parseStringTemplate();
       default:
         throw new Error(`Unimplemented token type: ${next.type}`);
     }
@@ -69,6 +71,109 @@ class Parser {
       type: 'string_literal',
       location: stringLiteral.location,
       string: stringLiteral.literal, // TODO: why don't these match?
+    };
+  }
+
+  parseStringTemplate(): SpotExpressionStringTemplate {
+    const startToken = this.consume('string_template_start');
+    const parts: (SpotExpressionStringLiteral | SpotExpression)[] = [];
+
+    // Parse all parts until we hit string_template_end
+    while (this.next().type !== 'string_template_end') {
+      const next = this.next();
+
+      if (next.type === 'string_literal') {
+        parts.push(this.parseStringLiteral());
+      } else if (next.type === 'string_template_expression_start') {
+        // Consume the expression start token
+        this.consume('string_template_expression_start');
+
+        // Parse the expression inside
+        const expression = this.parseExpression();
+        parts.push(expression);
+
+        // Consume the expression end token
+        this.consume('string_template_expression_end');
+      } else {
+        throw new Error(`Unexpected token in string template: ${next.type}`);
+      }
+    }
+
+    // Consume the string_template_end token
+    this.consume('string_template_end');
+
+    return {
+      type: 'string_template',
+      location: startToken.location,
+      parts,
+    };
+  }
+
+  parseExpression(): SpotExpression {
+    const next = this.next();
+
+    switch (next.type) {
+      case 'identifier':
+        return this.parseIdentifierExpression();
+      case 'string_literal':
+        return this.parseStringLiteral();
+      case 'string_template_start':
+        return this.parseStringTemplate();
+      default:
+        throw new Error(`Cannot parse expression for token type: ${next.type}`);
+    }
+  }
+
+  parseIdentifierExpression(): SpotExpression {
+    const token = this.consume('identifier');
+    const identifierText = token.identifier;
+
+    // Check if this is a function call
+    const next = this.next();
+    if (next.type === 'symbol' && next.symbol === '(') {
+      // This is a function call, parse it as such
+      this.consume('symbol'); // consume the '('
+
+      const params: SpotExpression[] = [];
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const nextToken = this.next();
+        if (nextToken.type === 'symbol' && nextToken.symbol === ')') {
+          // consume the closing paran
+          this.consume('symbol');
+
+          // end of function call
+          return {
+            type: 'function_call',
+            location: token.location,
+            functionVariable: {
+              type: 'variable_identifier',
+              location: token.location,
+              identifierText,
+            },
+            parameters: params,
+          };
+        }
+
+        params.push(this.parseExpression());
+
+        // consume commas after each param (optionally)
+        const next2 = this.next();
+        if (next2.type === 'symbol' && next2.symbol === ',') {
+          this.consume('symbol'); // consume the comma
+          continue;
+        }
+        if (next2.type !== 'symbol' || next2.symbol !== ')') {
+          throw new ParserError('Expected , or ) after function call parameter', next2.location);
+        }
+      }
+    }
+
+    // Otherwise it's just a variable identifier
+    return {
+      type: 'variable_identifier',
+      location: token.location,
+      identifierText,
     };
   }
 
@@ -130,26 +235,29 @@ class Parser {
     };
   }
 
-  parseIdentifier(): SpotExpressionFunctionCall {
-    // name++;
-    // name = "Joe";
-    // name()
-
+  parseIdentifier(): SpotExpression {
+    // This is used in statement context, so we need to check for variable assignments too
     const token = this.consume('identifier');
     const identifierText = token.identifier;
 
-    const following = this.consume('symbol');
-    if (following.symbol === '=') {
-      // variable assignment
-      throw new ParserError('Unimplemented variable assignment', following.location);
+    const next = this.next();
+
+    // Handle variable assignments (statements)
+    if (next.type === 'symbol' && next.symbol === '=') {
+      this.consume('symbol'); // consume '='
+      throw new ParserError('Unimplemented variable assignment', next.location);
     }
-    if (following.symbol === '(') {
-      // function call
+
+    // Handle function calls and variable references (expressions)
+    if (next.type === 'symbol' && next.symbol === '(') {
+      // This is a function call, parse it as such
+      this.consume('symbol'); // consume the '('
+
       const params: SpotExpression[] = [];
       // eslint-disable-next-line no-constant-condition
       while (true) {
-        const next = this.next();
-        if (next.type === 'symbol' && next.symbol === ')') {
+        const nextToken = this.next();
+        if (nextToken.type === 'symbol' && nextToken.symbol === ')') {
           // consume the closing paran
           this.consume('symbol');
 
@@ -166,7 +274,7 @@ class Parser {
           };
         }
 
-        params.push(this.parseNext());
+        params.push(this.parseExpression());
 
         // consume commas after each param (optionally)
         const next2 = this.next();
@@ -180,7 +288,12 @@ class Parser {
       }
     }
 
-    throw new Error(`Unexpected symbol after identifier: ${following.symbol}`);
+    // If no symbols follow, it's just a variable reference
+    return {
+      type: 'variable_identifier',
+      location: token.location,
+      identifierText,
+    };
   }
 
   peak(tokenType: string): SpotToken | null {
