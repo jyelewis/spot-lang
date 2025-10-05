@@ -1,7 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { setTimeout } from 'timers/promises';
 import assert from 'node:assert';
-import { threadId } from 'node:worker_threads';
 
 type ThreadFn = () => Promise<void>;
 type ThreadHandle = {
@@ -90,6 +89,7 @@ function print_thread_name() {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function main() {
   const t1 = threadModule.spawn(async () => {
     threadModule.set_thread_local_variable('name', 'Thread 1');

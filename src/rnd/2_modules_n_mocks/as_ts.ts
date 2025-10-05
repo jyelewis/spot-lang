@@ -32,6 +32,7 @@ interface Struct {
 // - EmailService
 // - PhotosBucket
 // - PrpLogger
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Module {
   id: string; // "com.jyelewis.EmailService"
   name: string; // "EmailService"

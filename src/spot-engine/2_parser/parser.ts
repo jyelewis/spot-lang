@@ -105,6 +105,7 @@ class Parser {
 
     // consume until we find a closing brace
     const body: SpotStatement[] = [];
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const next = this.next();
       if (next.type === 'symbol' && next.symbol === '}') {
@@ -144,7 +145,8 @@ class Parser {
     }
     if (following.symbol === '(') {
       // function call
-      let params: SpotExpression[] = [];
+      const params: SpotExpression[] = [];
+      // eslint-disable-next-line no-constant-condition
       while (true) {
         const next = this.next();
         if (next.type === 'symbol' && next.symbol === ')') {
