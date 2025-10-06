@@ -23,7 +23,7 @@ export async function executeApplication(application: SpotApplication): Promise<
 }
 
 export class SpotVM {
-  registers = new Map<number, string>();
+  registers = new Map<number, string | number>();
 
   constructor(public readonly application: SpotApplication) {}
 
@@ -67,6 +67,19 @@ export class SpotVM {
             operation.parameterValues
           );
           break;
+        // TODO: we're going to want to come back and make this an overloadable struct value
+        case 'string_concatenate': {
+          let concatenatedResult = '';
+          for (const partRegister of operation.partRegisters) {
+            const partValue = this.registers.get(partRegister.index);
+            if (partValue === undefined) {
+              throw new VMError(`Register ${partRegister.index} is empty`);
+            }
+            concatenatedResult += String(partValue);
+          }
+          this.registers.set(operation.targetRegister.index, concatenatedResult);
+          break;
+        }
         default:
           throw new VMError(`Unimplemented operation type: ${(operation as any).type}`);
       }
@@ -84,7 +97,7 @@ export class SpotVM {
         throw new VMError(`Register ${param.index} is empty`);
       }
       // console.log('[intrinsic print]', value);
-      this.printFn(value);
+      this.printFn(String(value));
       return;
     }
 

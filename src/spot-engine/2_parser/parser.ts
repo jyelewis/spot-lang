@@ -5,6 +5,8 @@ import {
   SpotExpressionFunctionDefinition,
   SpotExpressionStringLiteral,
   SpotExpressionStringTemplate,
+  SpotExpressionVariableDeclaration,
+  SpotExpressionIntLiteral,
 } from './Expressions';
 import { SpotStatement } from './Statements';
 import assert from 'node:assert';
@@ -58,6 +60,8 @@ class Parser {
     switch (token.keyword) {
       case 'func':
         return this.parseFunctionDefinition();
+      case 'let':
+        return this.parseVariableDeclaration();
       default:
         throw new Error(`Unimplemented keyword: ${token.keyword}`);
     }
@@ -71,6 +75,17 @@ class Parser {
       type: 'string_literal',
       location: stringLiteral.location,
       string: stringLiteral.literal, // TODO: why don't these match?
+    };
+  }
+
+  parseIntLiteral(): SpotExpressionIntLiteral {
+    const intLiteral = this.consume('int');
+    assert(intLiteral);
+
+    return {
+      type: 'int_literal',
+      location: intLiteral.location,
+      value: intLiteral.int,
     };
   }
 
@@ -119,6 +134,8 @@ class Parser {
         return this.parseStringLiteral();
       case 'string_template_start':
         return this.parseStringTemplate();
+      case 'int':
+        return this.parseIntLiteral();
       default:
         throw new Error(`Cannot parse expression for token type: ${next.type}`);
     }
@@ -232,6 +249,30 @@ class Parser {
       location: funcKeyword.location,
       functionName,
       body,
+    };
+  }
+
+  parseVariableDeclaration(): SpotExpressionVariableDeclaration {
+    const letKeyword = this.consume('keyword');
+    if (letKeyword.keyword !== 'let') {
+      throw new ParserError('Expected let keyword', letKeyword.location);
+    }
+
+    const nameToken = this.consume('identifier');
+    const variableName = nameToken.identifier;
+
+    const equalsSymbol = this.consume('symbol');
+    if (equalsSymbol.symbol !== '=') {
+      throw new ParserError('Expected = after variable name', equalsSymbol.location);
+    }
+
+    const value = this.parseExpression();
+
+    return {
+      type: 'variable_declaration',
+      location: letKeyword.location,
+      variableName,
+      value,
     };
   }
 

@@ -49,9 +49,26 @@ export interface SpotExpressionStringTemplate {
   parts: (SpotExpressionStringLiteral | SpotExpression)[];
 }
 
+export interface SpotExpressionVariableDeclaration {
+  type: 'variable_declaration';
+  location: CodeLocation;
+
+  variableName: string;
+  value: SpotExpression;
+}
+
+export interface SpotExpressionIntLiteral {
+  type: 'int_literal';
+  location: CodeLocation;
+
+  value: number;
+}
+
 export type SpotExpression =
   | SpotExpressionFunctionDefinition
   | SpotExpressionVariableIdentifier
   | SpotExpressionFunctionCall
   | SpotExpressionStringLiteral
-  | SpotExpressionStringTemplate;
+  | SpotExpressionStringTemplate
+  | SpotExpressionVariableDeclaration
+  | SpotExpressionIntLiteral;

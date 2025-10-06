@@ -18,7 +18,7 @@ export interface LoadConstantOperation {
   location: CodeLocation;
 
   targetRegister: RegisterReference;
-  value: string; // TODO: need to point to structs in vm memory
+  value: string | number; // TODO: need to point to structs in vm memory
 }
 
 export interface ClearRegisterOperation {
@@ -28,4 +28,16 @@ export interface ClearRegisterOperation {
   register: RegisterReference;
 }
 
-export type Operation = FunctionCallOperation | LoadConstantOperation | ClearRegisterOperation;
+export interface StringConcatenateOperation {
+  type: 'string_concatenate';
+  location: CodeLocation;
+
+  targetRegister: RegisterReference;
+  partRegisters: RegisterReference[];
+}
+
+export type Operation =
+  | FunctionCallOperation
+  | LoadConstantOperation
+  | ClearRegisterOperation
+  | StringConcatenateOperation;
