@@ -7,6 +7,7 @@ import {
   SpotExpressionStringTemplate,
   SpotExpressionVariableDeclaration,
   SpotExpressionIntLiteral,
+  SpotExpressionBinaryOperation,
 } from './Expressions';
 import { SpotStatement } from './Statements';
 import assert from 'node:assert';
@@ -125,6 +126,52 @@ class Parser {
   }
 
   parseExpression(): SpotExpression {
+    return this.parseBinaryExpression(0);
+  }
+
+  parseBinaryExpression(minPrecedence: number): SpotExpression {
+    let left = this.parsePrimaryExpression();
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const next = this.next();
+      if (next.type !== 'symbol') break;
+
+      const operator = next.symbol as '+' | '-' | '*' | '/';
+      const precedence = this.getOperatorPrecedence(operator);
+
+      if (precedence < minPrecedence) break;
+
+      this.consume('symbol'); // consume the operator
+
+      const right = this.parseBinaryExpression(precedence + 1);
+
+      left = {
+        type: 'binary_operation',
+        location: left.location,
+        left,
+        operator,
+        right,
+      } satisfies SpotExpressionBinaryOperation;
+    }
+
+    return left;
+  }
+
+  getOperatorPrecedence(operator: string): number {
+    switch (operator) {
+      case '+':
+      case '-':
+        return 1;
+      case '*':
+      case '/':
+        return 2;
+      default:
+        return -1; // Not an operator we handle
+    }
+  }
+
+  parsePrimaryExpression(): SpotExpression {
     const next = this.next();
 
     switch (next.type) {

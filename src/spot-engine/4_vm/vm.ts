@@ -80,6 +80,44 @@ export class SpotVM {
           this.registers.set(operation.targetRegister.index, concatenatedResult);
           break;
         }
+        // TODO: also to become an implementation method later - although we need intrinsics at some point
+        case 'arithmetic': {
+          const leftValue = this.registers.get(operation.leftRegister.index);
+          const rightValue = this.registers.get(operation.rightRegister.index);
+
+          if (leftValue === undefined) {
+            throw new VMError(`Register ${operation.leftRegister.index} is empty`);
+          }
+          if (rightValue === undefined) {
+            throw new VMError(`Register ${operation.rightRegister.index} is empty`);
+          }
+
+          // Ensure both values are numbers
+          if (typeof leftValue !== 'number' || typeof rightValue !== 'number') {
+            throw new VMError(`Arithmetic operations require numeric operands`);
+          }
+
+          let result: number;
+          switch (operation.operator) {
+            case '+':
+              result = leftValue + rightValue;
+              break;
+            case '-':
+              result = leftValue - rightValue;
+              break;
+            case '*':
+              result = leftValue * rightValue;
+              break;
+            case '/':
+              result = leftValue / rightValue;
+              break;
+            default:
+              throw new VMError(`Unknown arithmetic operator: ${operation.operator}`);
+          }
+
+          this.registers.set(operation.targetRegister.index, result);
+          break;
+        }
         default:
           throw new VMError(`Unimplemented operation type: ${(operation as any).type}`);
       }

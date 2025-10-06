@@ -64,6 +64,15 @@ export interface SpotExpressionIntLiteral {
   value: number;
 }
 
+export interface SpotExpressionBinaryOperation {
+  type: 'binary_operation';
+  location: CodeLocation;
+
+  left: SpotExpression;
+  operator: '+' | '-' | '*' | '/';
+  right: SpotExpression;
+}
+
 export type SpotExpression =
   | SpotExpressionFunctionDefinition
   | SpotExpressionVariableIdentifier
@@ -71,4 +80,5 @@ export type SpotExpression =
   | SpotExpressionStringLiteral
   | SpotExpressionStringTemplate
   | SpotExpressionVariableDeclaration
-  | SpotExpressionIntLiteral;
+  | SpotExpressionIntLiteral
+  | SpotExpressionBinaryOperation;

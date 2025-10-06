@@ -36,8 +36,19 @@ export interface StringConcatenateOperation {
   partRegisters: RegisterReference[];
 }
 
+export interface ArithmeticOperation {
+  type: 'arithmetic';
+  location: CodeLocation;
+
+  targetRegister: RegisterReference;
+  leftRegister: RegisterReference;
+  operator: '+' | '-' | '*' | '/';
+  rightRegister: RegisterReference;
+}
+
 export type Operation =
   | FunctionCallOperation
   | LoadConstantOperation
   | ClearRegisterOperation
-  | StringConcatenateOperation;
+  | StringConcatenateOperation
+  | ArithmeticOperation;

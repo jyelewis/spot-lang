@@ -263,5 +263,37 @@ function compileExpression(
     };
   }
 
+  if (expression.type === 'binary_operation') {
+    // Compile binary operation
+    const leftEvaluation = compileExpression(expression.left, context);
+    const rightEvaluation = compileExpression(expression.right, context);
+    const resultRegister: RegisterReference = { index: nextRegisterIndex++ };
+
+    return {
+      computeOperations: [
+        ...leftEvaluation.computeOperations,
+        ...rightEvaluation.computeOperations,
+        {
+          type: 'arithmetic',
+          location: expression.location,
+          targetRegister: resultRegister,
+          leftRegister: leftEvaluation.resultRegister,
+          operator: expression.operator,
+          rightRegister: rightEvaluation.resultRegister,
+        },
+      ],
+      resultRegister,
+      discardOperations: [
+        ...leftEvaluation.discardOperations,
+        ...rightEvaluation.discardOperations,
+        {
+          type: 'clear_register',
+          location: expression.location,
+          register: resultRegister,
+        },
+      ],
+    };
+  }
+
   throw new CompilerError(`Unimplemented expression type ${expression.type}`, expression.location);
 }
