@@ -1,0 +1,49 @@
+@@ApiController("/auth")
+
+let jwt_secret_key = "ch@nge_m3_1"
+
+let admin_username = "admin";
+let admin_password = "password";
+
+struct LoginRequestDTO {
+    username: String,
+    password: String,
+}
+
+struct LoginResponseDTO {
+    token: String,
+}
+
+// TODO: should this live in the JWT package?
+@Post("/login")
+@AuthGuard(AllowEveryoneAuthGuard)
+fn login(@ReqBody body: LoginRequestDTO) -> LoginResponseDTO {
+    let auth_valid = body.username == admin_username && body.password == admin_password
+    if (!auth_valid) {
+        throw HttpInvalidCredentialsException()
+    }
+
+    LoginResponseDTO {
+        token: Jwt::encode(
+            data: {user: username},
+            secret_key: jwt_secret_key,
+            encryption: JWT::Encryption::HS256
+        )
+    }
+}
+
+// TODO: need auth guard
+@Get("/my/videos")
+fn my_videos(@ReqHeader("Authorization") auth_header: String) -> Vec<String> {
+    let token = auth_header.replace("Bearer ", "")
+    let decoded = Jwt::decode(
+        token: token,
+        secret_key: jwt_secret_key,
+        encryption: JWT::Encryption::HS256
+    ) catch {
+        throw HttpInvalidCredentialsException()
+    }
+
+    // In a real application, you would fetch user-specific videos from a database
+    return vec!["video1.mp4", "video2.mp4", "video3.mp4"]
+}

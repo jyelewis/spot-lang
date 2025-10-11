@@ -1,0 +1,34 @@
+use com.spot.http.HttpAuthGuard
+use com.spot.logger
+
+// abstract module
+implements module HttpAuthGuard
+
+struct JWTAuthGuardConfig {
+    implements ConfigProvider
+
+    jwt_secret_key: String
+    encryption: JWT::Encryption = JWT::Encryption::HS256
+}
+
+fn can_access(request: HttpRequest) -> AuthGuardResult
+    let auth_header = request.get_header("Authorization").notNullOr {
+        logger.warn("Request denied: Missing Authorization header")
+        return AuthGuardResult::Deny
+    }
+
+    let token = auth_header.replace("Bearer ", "")
+    let decoded = try {
+        Jwt::decode(
+            token: token,
+            secret_key: JWTAuthGuardConfig.get().secret_key,
+            encryption: JWTAuthGuardConfig.get().encryption
+        )
+    } except (error: JWTError) {
+        logger.warn("Request denied: Failed to validate JWT - {error}")
+        return AuthGuardResult::Deny
+    }
+
+    return AuthGuardResult::Allow
+    // TODO: admin only endpoints?
+}

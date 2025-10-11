@@ -1,0 +1,39 @@
+example.spot
+
+let query_result: smorg_service::Query = smorg_service::execute_query("select 1".into());
+
+print(query_result.into<String>());
+
+----
+smorg_service.spot
+
+struct Query {
+    result: unknown;
+
+    fn print() {
+        return "Example query result string"
+    }
+}
+
+fn execute_query() {
+    // go off and do real query
+}
+
+---
+smorg_service.mock.spot
+
+// you've done inheritance again
+mocks smorg_service.spot
+
+mocks struct Query {
+    // existing fields are implicit
+    mocks fn print() {
+        return "Example query result string"
+    }
+}
+
+mocks fn execute_query() {
+    Query {
+        result: "mock-query-result"
+    }
+}

@@ -1,0 +1,15 @@
+use com.a.rest-jwt-auth.jwt_auth_guard
+
+@WebServerConfig.provider
+fn get() = WebServerConfig {
+    port: 8080,
+    static_files_path: "static",
+    enable_cors: true,
+    cors_allowed_origins: ["*"],
+    enable_logging: true,
+    log_level: LogLevel::Info,
+    // are whole modules types that can be passed around like this?
+    // again, are modules just singleton structs?
+    // default_auth_guard: HttpAuthGuard
+    default_auth_guard: jwt_auth_guard
+}

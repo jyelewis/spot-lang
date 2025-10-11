@@ -1,0 +1,6 @@
+{
+  "name": "vidz",
+  "dependencies": {
+    "rest-jwt-auth": "1.0.0"
+  }
+}

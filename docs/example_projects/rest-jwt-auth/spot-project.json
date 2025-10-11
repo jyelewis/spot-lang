@@ -1,0 +1,7 @@
+{
+  "name": "rest-jwt-auth",
+  "version": "1.0.0",
+  "dependencies": {
+    "jwt": "1.1.0"
+  }
+}

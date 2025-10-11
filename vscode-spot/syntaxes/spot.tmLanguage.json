@@ -74,7 +74,7 @@
       ]
     },
     "reserved": {
-      "match": "\\b(let|module|func|import|implements)\\b",
+      "match": "\\b(return|let|mut|module|fn|struct|import|implements)\\b",
       "captures": {
         "1": {
           "name": "keyword.control.smt"

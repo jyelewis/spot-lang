@@ -126,17 +126,20 @@ class Parser {
   }
 
   parseExpression(): SpotExpression {
+    // TODO: don't love this approach
     return this.parseBinaryExpression(0);
   }
 
   parseBinaryExpression(minPrecedence: number): SpotExpression {
     let left = this.parsePrimaryExpression();
 
+    // TODO: don't love this approach
     // eslint-disable-next-line no-constant-condition
     while (true) {
       const next = this.next();
       if (next.type !== 'symbol') break;
 
+      // TODO: remove this cast
       const operator = next.symbol as '+' | '-' | '*' | '/';
       const precedence = this.getOperatorPrecedence(operator);
 

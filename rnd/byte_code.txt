@@ -1,0 +1,41 @@
+
+{
+    global_variables: Array<{
+        id: "global_variable_path",
+        type: "type_path"
+    }>;
+    // ayo, did we just decide that modules are global, singleton structs?
+    // which we can swap (like logger, or during tests)
+
+    // used both for runtime reflection, and appropriate sizings
+    types: Array<{
+        id: "symbol()",
+        typeType: "enum" | "struct",
+        typeParams: [...]
+        fields: [...]
+    }>;
+
+    // TODO: what is an annotation in the bytecode?
+
+    functions: Array<{
+        id: "symbol()",
+        params: Array<{
+            annotations: Annotation[],
+            name: string,
+            type: typeId,
+            typeParams: [...],
+        }>,
+        // TODO: type params? What is a type exactly?
+        returns: typeId,
+
+        operations: ByteCodeOp[]
+    }>
+
+    // TODO: symbol table
+    // TODO: wait is this all runtime anyway?
+    modules: Array<{
+        id: symbol()
+        types: typeId[],
+        functions: functionId[]
+    }>
+}

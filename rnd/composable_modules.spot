@@ -12,20 +12,31 @@ module TilingJobQueue : SQSQueueModule {
         image_key: String
     }
 
-    func process_message(msg: Msg) {
+    fn process_message(msg: Msg) {
         let image_data = ImagesBucket.get_object(msg.image_key)
         let tiles_blob = slice_into_tiles(image_data)
         ImagesBucket.put_object("{msg.image_key}/tiles.blob", tiles_blob)
     }
 
-    func handle_error(msg: Msg) {
+    fn handle_error(msg: Msg) {
         logger::log("Failed to tile image {msg.image_key}")
+    }
+
+
+    // TODO: aren't iterators inherently mutable?
+    fn check_all(images: Iter<Image>): boolean {
+        let my_func = { image -> image.is_valid() }
+
+        return images.every { image -> image.is_valid() }
+        return images.every { it.is_valid() }
+        return images.every(fn (image: Image) { image.is_valid() })
+        return images.every fn (image: Image) { image.is_valid() }
     }
 }
 
 module Myapp {
     import TilingJobQueue
-    func enqueue_image_for_tiling(image_key: String) {
+    fn enqueue_image_for_tiling(image_key: String) {
         TilingJobQueue.add(TilingJobQueue::Msg { image_key })
     }
 }
