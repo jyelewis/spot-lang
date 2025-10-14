@@ -1,0 +1,9 @@
+use lang.spot.env
+use com.jyelewis.Postgres
+
+let db = Postgres.DB {
+    // TODO: erm, this is code outside the main fn? Gotta init stuff somewhere though
+    // TODO: null or throws?
+    connection_string: env.get("DB_CONNECTION_STRING")
+    pool_size: 10
+}

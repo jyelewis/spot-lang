@@ -3,4 +3,5 @@
 fn get() = JWTAuthGuardConfig {
     jwt_secret_key: "some_secret",
     encryption: JWT::Encryption::HS256,
+    getToken: fn(req: Request) = req.headers.get("authorization").split(" ")[1]?,
 }

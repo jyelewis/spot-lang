@@ -8,16 +8,30 @@ struct JWTAuthGuardConfig {
     implements ConfigProvider
 
     jwt_secret_key: String
-    encryption: JWT::Encryption = JWT::Encryption::HS256
+    encryption: JWT::Encryption = JWT::Encryption::HS256,
+    getToken: fn(req: HttpRequest) -> String? = fn(req) {
+        // TODO: how do we test this function?
+        let auth_header = req.get_header("Authorization").notNullOr {
+            return Null
+        }
+
+        return auth_header.replace("Bearer ", "")
+    }
 }
 
 fn can_access(request: HttpRequest) -> AuthGuardResult
-    let auth_header = request.get_header("Authorization").notNullOr {
-        logger.warn("Request denied: Missing Authorization header")
+    let token = try {
+        JWTAuthGuardConfig.get().getToken(request)
+    } except (error) {
+        logger.warn("Request denied: Failed to .getToken() - {error}")
         return AuthGuardResult::Deny
     }
 
-    let token = auth_header.replace("Bearer ", "")
+    let token = token.notNullOr {
+        logger.warn("Request denied: No JWT token provided")
+        return AuthGuardResult::Deny
+    }
+
     let decoded = try {
         Jwt::decode(
             token: token,
@@ -30,5 +44,4 @@ fn can_access(request: HttpRequest) -> AuthGuardResult
     }
 
     return AuthGuardResult::Allow
-    // TODO: admin only endpoints?
 }

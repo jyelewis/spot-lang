@@ -6,17 +6,27 @@ let admin_username = "admin";
 let admin_password = "password";
 
 struct LoginRequestDTO {
+    implements JSONSerializable
+
     username: String,
     password: String,
 }
 
+struct JwtPayload {
+    implements JSONSerializable
+
+    username: String,
+    is_admin: Bool
+}
+
 struct LoginResponseDTO {
+    implements JSONSerializable
+
     token: String,
 }
 
-// TODO: should this live in the JWT package?
 @Post("/login")
-@AuthGuard(AllowEveryoneAuthGuard)
+@AuthGuard(AllowEveryone)
 fn login(@ReqBody body: LoginRequestDTO) -> LoginResponseDTO {
     let auth_valid = body.username == admin_username && body.password == admin_password
     if (!auth_valid) {
@@ -24,26 +34,13 @@ fn login(@ReqBody body: LoginRequestDTO) -> LoginResponseDTO {
     }
 
     LoginResponseDTO {
-        token: Jwt::encode(
-            data: {user: username},
-            secret_key: jwt_secret_key,
-            encryption: JWT::Encryption::HS256
-        )
+        token: JwtAuth::generateToken(JwtPayload {
+            username: body.username,
+            is_admin: true
+        })
     }
 }
 
-// TODO: need auth guard
-@Get("/my/videos")
-fn my_videos(@ReqHeader("Authorization") auth_header: String) -> Vec<String> {
-    let token = auth_header.replace("Bearer ", "")
-    let decoded = Jwt::decode(
-        token: token,
-        secret_key: jwt_secret_key,
-        encryption: JWT::Encryption::HS256
-    ) catch {
-        throw HttpInvalidCredentialsException()
-    }
+@Get("/me")
+fn me(@JWTAuthPayload() user: JwtPayload) = user
 
-    // In a real application, you would fetch user-specific videos from a database
-    return vec!["video1.mp4", "video2.mp4", "video3.mp4"]
-}

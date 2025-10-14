@@ -1,0 +1,56 @@
+
+@@APIController("/videos")
+
+
+
+struct VideoDTO {
+    id: int,
+    owner_user_id: int,
+    title: String,
+    status: enum Status {
+        Uploading,
+        Uploaded,
+        Processing,
+        Available
+    }
+    stream_urls: struct StreamURL {
+        hls: String?
+    }? // sneeky optional syntax here too
+
+    implements into<Video>
+    fn into() -> Video {
+        Video {
+            id,
+            title,
+            s3_key: "" // TODO: map properly
+        }
+    }
+}
+
+// TODO: proper authorisation/authentication
+@Get()
+fn my_videos(@JWTAuthPayload() user: JwtPayload) {
+    if (user.is_admin) {
+        return ["admin_video1.mp4", "admin_video2.mp4"]
+    }
+
+    return ["video1.mp4", "video2.mp4", "video3.mp4"]
+}
+
+struct CreateVideoDTO {
+    title: String,
+}
+@Post()
+fn create_video(
+    @JWTAuthPayload() user: JwtPayload,
+    @RequestBody() createVideo: CreateVideoDTO
+) {
+    let created_video = video_service::create_video({ user.id, createVideo.title })
+
+    // TODO: return upload URL
+    return created_video
+
+    // Logic to create a new video
+    // TODO: type this?
+    return {"message": "Video created successfully", "video": video}
+}

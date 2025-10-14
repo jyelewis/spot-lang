@@ -1,0 +1,15 @@
+use ../db/db
+
+@db.model()
+struct Video {
+    id: Int
+    title: String
+    s3_key: String
+}
+
+// TODO: active records?
+// fn create(video: Video) -> Video {
+//     // Logic to create a new video
+//     return video
+// }
+

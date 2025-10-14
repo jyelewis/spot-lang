@@ -1,0 +1,9 @@
+
+struct CreateVideo {
+    user_id: int,
+    title: String,
+}
+
+fn create_video(video: CreateVideo) {
+    video_repository::create()
+}
