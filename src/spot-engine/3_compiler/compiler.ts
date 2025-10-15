@@ -45,6 +45,9 @@ export function compileASTToApplication(ast: SpotStatement[]): SpotApplication {
       print: {
         intrinsic: 'print',
       },
+      input: {
+        intrinsic: 'input',
+      },
     },
   };
 
@@ -442,6 +445,43 @@ function compileExpression(
       resultRegister,
       discardOperations: [
         ...operandEvaluation.discardOperations,
+        {
+          type: 'clear_register',
+          location: expression.location,
+          register: resultRegister,
+        },
+      ],
+    };
+  }
+
+  if (expression.type === 'function_call') {
+    // Compile function call expression (returns a value)
+    const resultRegister: RegisterReference = { index: nextRegisterIndex++ };
+    const computeParamsOperations: Operation[] = [];
+    const discardParamsOperations: Operation[] = [];
+    const paramRegisterReferences: RegisterReference[] = [];
+
+    for (const paramExpression of expression.parameters) {
+      const paramExpressionEvaluation = compileExpression(paramExpression, context);
+      computeParamsOperations.push(...paramExpressionEvaluation.computeOperations);
+      paramRegisterReferences.push(paramExpressionEvaluation.resultRegister);
+      discardParamsOperations.push(...paramExpressionEvaluation.discardOperations);
+    }
+
+    return {
+      computeOperations: [
+        ...computeParamsOperations,
+        {
+          type: 'function_call',
+          location: expression.location,
+          functionName: expression.functionVariable.identifierText,
+          parameterValues: paramRegisterReferences,
+          targetRegister: resultRegister,
+        },
+      ],
+      resultRegister,
+      discardOperations: [
+        ...discardParamsOperations,
         {
           type: 'clear_register',
           location: expression.location,

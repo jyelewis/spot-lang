@@ -2190,24 +2190,24 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
 exports[`Tokeniser code_examples folder Tokenises '4_input.spot 1`] = `
 [
   {
-    "identifier": "fn",
+    "keyword": "func",
     "location": {
       "column": 1,
       "line": 2,
     },
-    "type": "identifier",
+    "type": "keyword",
   },
   {
     "identifier": "main",
     "location": {
-      "column": 4,
+      "column": 6,
       "line": 2,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 8,
+      "column": 10,
       "line": 2,
     },
     "symbol": "(",
@@ -2215,7 +2215,7 @@ exports[`Tokeniser code_examples folder Tokenises '4_input.spot 1`] = `
   },
   {
     "location": {
-      "column": 9,
+      "column": 11,
       "line": 2,
     },
     "symbol": ")",
@@ -2223,7 +2223,7 @@ exports[`Tokeniser code_examples folder Tokenises '4_input.spot 1`] = `
   },
   {
     "location": {
-      "column": 11,
+      "column": 13,
       "line": 2,
     },
     "symbol": "{",
@@ -2323,16 +2323,16 @@ exports[`Tokeniser code_examples folder Tokenises '4_input.spot 1`] = `
     "type": "string_template_start",
   },
   {
-    "literal": "Hello, ",
+    "literal": "Hello ",
     "location": {
-      "column": 19,
+      "column": 18,
       "line": 4,
     },
     "type": "string_literal",
   },
   {
     "location": {
-      "column": 19,
+      "column": 18,
       "line": 4,
     },
     "type": "string_template_expression_start",
@@ -2340,14 +2340,14 @@ exports[`Tokeniser code_examples folder Tokenises '4_input.spot 1`] = `
   {
     "identifier": "name",
     "location": {
-      "column": 20,
+      "column": 19,
       "line": 4,
     },
     "type": "identifier",
   },
   {
     "location": {
-      "column": 24,
+      "column": 23,
       "line": 4,
     },
     "type": "string_template_expression_end",
@@ -2355,21 +2355,21 @@ exports[`Tokeniser code_examples folder Tokenises '4_input.spot 1`] = `
   {
     "literal": "!",
     "location": {
-      "column": 26,
+      "column": 25,
       "line": 4,
     },
     "type": "string_literal",
   },
   {
     "location": {
-      "column": 27,
+      "column": 26,
       "line": 4,
     },
     "type": "string_template_end",
   },
   {
     "location": {
-      "column": 27,
+      "column": 26,
       "line": 4,
     },
     "symbol": ")",

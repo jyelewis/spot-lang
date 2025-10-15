@@ -72,6 +72,9 @@ exports[`compiler compiles hello world 1`] = `
     },
     "std": {
       "functions": {
+        "input": {
+          "intrinsic": "input",
+        },
         "print": {
           "intrinsic": "print",
         },

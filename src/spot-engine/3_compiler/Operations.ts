@@ -11,6 +11,7 @@ export interface FunctionCallOperation {
   // TODO: will need scope etc
   functionName: string;
   parameterValues: RegisterReference[];
+  targetRegister?: RegisterReference; // Optional - for functions that return values
 }
 
 export interface LoadConstantOperation {

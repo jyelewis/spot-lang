@@ -3,7 +3,8 @@ import { VMError } from './VMError';
 import { RegisterReference } from '../3_compiler/Operations';
 
 export async function executeApplicationAndCaptureOutput(
-  application: SpotApplication
+  application: SpotApplication,
+  inputData?: string[]
 ): Promise<string> {
   const vm = new SpotVM(application);
 
@@ -11,6 +12,17 @@ export async function executeApplicationAndCaptureOutput(
   vm.printFn = (str: string) => {
     output.push(str);
   };
+
+  // Set up input function for testing
+  if (inputData) {
+    let inputIndex = 0;
+    vm.inputFn = async (prompt: string): Promise<string> => {
+      if (inputIndex >= inputData.length) {
+        throw new Error('No more input data available for testing');
+      }
+      return inputData[inputIndex++];
+    };
+  }
 
   await vm.executeFunction('main', 'main', []);
 
@@ -31,11 +43,27 @@ export class SpotVM {
     console.log(str);
   };
 
+  public inputFn = (prompt: string): Promise<string> => {
+    // Default implementation using readline for interactive input
+    return new Promise((resolve) => {
+      const readline = require('readline');
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+
+      rl.question(prompt, (answer: string) => {
+        rl.close();
+        resolve(answer);
+      });
+    });
+  };
+
   async executeFunction(
     moduleName: string,
     functionName: string,
     parameters: RegisterReference[]
-  ): Promise<void> {
+  ): Promise<string | number | boolean | void> {
     const module = this.application.modules[moduleName];
     if (module === undefined) {
       throw new VMError(`No such module '${moduleName}'`);
@@ -47,8 +75,7 @@ export class SpotVM {
     }
 
     if ('intrinsic' in func) {
-      this.executeIntrinsicFunction(func.intrinsic, parameters);
-      return;
+      return await this.executeIntrinsicFunction(func.intrinsic, parameters);
     }
 
     // execute bytecode operations
@@ -63,11 +90,15 @@ export class SpotVM {
           this.registers.delete(operation.register.index);
           break;
         case 'function_call':
-          await this.executeFunction(
+          const result = await this.executeFunction(
             'std', // TODO: hardcoded
             operation.functionName,
             operation.parameterValues
           );
+          // If the function call has a target register, store the result
+          if (operation.targetRegister && result !== undefined) {
+            this.registers.set(operation.targetRegister.index, result);
+          }
           break;
         // TODO: we're going to want to come back and make this an overloadable struct value
         case 'string_concatenate': {
@@ -192,7 +223,7 @@ export class SpotVM {
     }
   }
 
-  executeIntrinsicFunction(intrinsicName: string, parameters: RegisterReference[]): void {
+  async executeIntrinsicFunction(intrinsicName: string, parameters: RegisterReference[]): Promise<string | number | boolean | void> {
     if (intrinsicName === 'print') {
       if (parameters.length !== 1) {
         throw new VMError('intrinsic "print" takes exactly one parameter');
@@ -207,6 +238,20 @@ export class SpotVM {
       return;
     }
 
-    throw new Error('intrinsic not implemented.');
+    if (intrinsicName === 'input') {
+      if (parameters.length !== 1) {
+        throw new VMError('intrinsic "input" takes exactly one parameter');
+      }
+      const param = parameters[0];
+      const promptValue = this.registers.get(param.index);
+      if (promptValue === undefined) {
+        throw new VMError(`Register ${param.index} is empty`);
+      }
+      // Call the input function and return the result
+      const inputResult = await this.inputFn(String(promptValue));
+      return inputResult;
+    }
+
+    throw new Error(`intrinsic "${intrinsicName}" not implemented.`);
   }
 }
