@@ -20,6 +20,6 @@
     "incremental": true,
     "noEmitOnError": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "rnd/**/*"],
   "exclude": ["node_modules", "dist"]
 }

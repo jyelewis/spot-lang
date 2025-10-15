@@ -23,7 +23,7 @@ export async function executeApplication(application: SpotApplication): Promise<
 }
 
 export class SpotVM {
-  registers = new Map<number, string | number>();
+  registers = new Map<number, string | number | boolean>();
 
   constructor(public readonly application: SpotApplication) {}
 
@@ -52,7 +52,9 @@ export class SpotVM {
     }
 
     // execute bytecode operations
-    for (const operation of func.operations) {
+    let operationIndex = 0;
+    while (operationIndex < func.operations.length) {
+      const operation = func.operations[operationIndex];
       switch (operation.type) {
         case 'load_constant':
           this.registers.set(operation.targetRegister.index, operation.value);
@@ -112,15 +114,81 @@ export class SpotVM {
               result = leftValue / rightValue;
               break;
             default:
-              throw new VMError(`Unknown arithmetic operator: ${operation.operator}`);
+              throw new VMError(`Unknown arithmetic operator: ${(operation as any).operator}`);
           }
 
           this.registers.set(operation.targetRegister.index, result);
           break;
         }
+        case 'unary': {
+          const operandValue = this.registers.get(operation.operandRegister.index);
+
+          if (operandValue === undefined) {
+            throw new VMError(`Register ${operation.operandRegister.index} is empty`);
+          }
+
+          let result: boolean | number;
+          switch (operation.operator) {
+            case '!':
+              // Boolean negation
+              if (typeof operandValue === 'boolean') {
+                result = !operandValue;
+              } else {
+                throw new VMError(
+                  `Boolean negation requires a boolean operand, got ${typeof operandValue}`
+                );
+              }
+              break;
+            case '-':
+              // Numeric negation
+              if (typeof operandValue === 'number') {
+                result = -operandValue;
+              } else {
+                throw new VMError(
+                  `Numeric negation requires a numeric operand, got ${typeof operandValue}`
+                );
+              }
+              break;
+            default:
+              throw new VMError(`Unknown unary operator: ${(operation as any).operator}`);
+          }
+
+          this.registers.set(operation.targetRegister.index, result);
+          break;
+        }
+        case 'conditional_jump': {
+          const conditionValue = this.registers.get(operation.conditionRegister.index);
+
+          if (conditionValue === undefined) {
+            throw new VMError(`Register ${operation.conditionRegister.index} is empty`);
+          }
+
+          if (typeof conditionValue !== 'boolean') {
+            throw new VMError(
+              `Conditional jump requires a boolean condition, got ${typeof conditionValue}`
+            );
+          }
+
+          // Jump if condition is false (inverted logic for easier compilation)
+          if (!conditionValue) {
+            operationIndex = operation.jumpToOperation;
+            continue; // Skip the increment at the end of the loop
+          }
+          break;
+        }
+        case 'unconditional_jump': {
+          operationIndex = operation.jumpToOperation;
+          continue; // Skip the increment at the end of the loop
+        }
+        case 'label': {
+          // Labels are no-op at runtime, just continue
+          break;
+        }
         default:
           throw new VMError(`Unimplemented operation type: ${(operation as any).type}`);
       }
+
+      operationIndex++; // Move to next operation
     }
   }
 

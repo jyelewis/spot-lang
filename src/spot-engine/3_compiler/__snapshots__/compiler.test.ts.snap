@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiler compiles hello world 1`] = `
+{
+  "modules": {
+    "main": {
+      "functions": {
+        "main": {
+          "operations": [
+            {
+              "location": {
+                "column": 23,
+                "line": 3,
+              },
+              "targetRegister": {
+                "index": 1,
+              },
+              "type": "load_constant",
+              "value": "Hello, World!",
+            },
+            {
+              "location": {
+                "column": 9,
+                "line": 3,
+              },
+              "partRegisters": [
+                {
+                  "index": 1,
+                },
+              ],
+              "targetRegister": {
+                "index": 0,
+              },
+              "type": "string_concatenate",
+            },
+            {
+              "functionName": "print",
+              "location": {
+                "column": 3,
+                "line": 3,
+              },
+              "parameterValues": [
+                {
+                  "index": 0,
+                },
+              ],
+              "type": "function_call",
+            },
+            {
+              "location": {
+                "column": 23,
+                "line": 3,
+              },
+              "register": {
+                "index": 1,
+              },
+              "type": "clear_register",
+            },
+            {
+              "location": {
+                "column": 9,
+                "line": 3,
+              },
+              "register": {
+                "index": 0,
+              },
+              "type": "clear_register",
+            },
+          ],
+        },
+      },
+    },
+    "std": {
+      "functions": {
+        "print": {
+          "intrinsic": "print",
+        },
+      },
+    },
+  },
+}
+`;

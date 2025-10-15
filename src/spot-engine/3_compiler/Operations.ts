@@ -18,7 +18,7 @@ export interface LoadConstantOperation {
   location: CodeLocation;
 
   targetRegister: RegisterReference;
-  value: string | number; // TODO: need to point to structs in vm memory
+  value: string | number | boolean; // TODO: need to point to structs in vm memory
 }
 
 export interface ClearRegisterOperation {
@@ -46,9 +46,44 @@ export interface ArithmeticOperation {
   rightRegister: RegisterReference;
 }
 
+export interface UnaryOperation {
+  type: 'unary';
+  location: CodeLocation;
+
+  targetRegister: RegisterReference;
+  operator: '!' | '-';
+  operandRegister: RegisterReference;
+}
+
+export interface ConditionalJumpOperation {
+  type: 'conditional_jump';
+  location: CodeLocation;
+
+  conditionRegister: RegisterReference;
+  jumpToOperation: number; // Index of operation to jump to if condition is false
+}
+
+export interface UnconditionalJumpOperation {
+  type: 'unconditional_jump';
+  location: CodeLocation;
+
+  jumpToOperation: number; // Index of operation to jump to
+}
+
+export interface LabelOperation {
+  type: 'label';
+  location: CodeLocation;
+
+  labelName: string;
+}
+
 export type Operation =
   | FunctionCallOperation
   | LoadConstantOperation
   | ClearRegisterOperation
   | StringConcatenateOperation
-  | ArithmeticOperation;
+  | ArithmeticOperation
+  | UnaryOperation
+  | ConditionalJumpOperation
+  | UnconditionalJumpOperation
+  | LabelOperation;

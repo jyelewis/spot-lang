@@ -12,6 +12,7 @@ func main() {
     const tokens = tokeniseCode(code);
     const ast = parseCodeTokens(tokens);
     const byteCodeApplication = compileASTToApplication(ast);
-    console.log(JSON.stringify(byteCodeApplication));
+    expect(byteCodeApplication).toMatchSnapshot();
+    // console.log(JSON.stringify(byteCodeApplication));
   });
 });

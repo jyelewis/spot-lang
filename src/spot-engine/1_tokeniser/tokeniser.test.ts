@@ -23,6 +23,9 @@ describe('Tokeniser', () => {
       expect(tokeniseExample('2_addition')).resolves.toMatchSnapshot());
 
     it(`Tokenises '3_ifs.spot`, () => expect(tokeniseExample('3_ifs')).resolves.toMatchSnapshot());
+
+    it(`Tokenises '4_input.spot`, () =>
+      expect(tokeniseExample('4_input')).resolves.toMatchSnapshot());
   });
 
   describe('Specific case', () => {

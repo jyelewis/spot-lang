@@ -8,6 +8,9 @@ import {
   SpotExpressionVariableDeclaration,
   SpotExpressionIntLiteral,
   SpotExpressionBinaryOperation,
+  SpotExpressionBooleanLiteral,
+  SpotExpressionUnaryOperation,
+  SpotExpressionIfStatement,
 } from './Expressions';
 import { SpotStatement } from './Statements';
 import assert from 'node:assert';
@@ -52,6 +55,10 @@ class Parser {
         return this.parseStringLiteral();
       case 'string_template_start':
         return this.parseStringTemplate();
+      case 'comment': {
+        this.consume('comment');
+        return this.parseNext(); // skip comments
+      }
       default:
         throw new Error(`Unimplemented token type: ${next.type}`);
     }
@@ -63,6 +70,8 @@ class Parser {
         return this.parseFunctionDefinition();
       case 'let':
         return this.parseVariableDeclaration();
+      case 'if':
+        return this.parseIfStatement();
       default:
         throw new Error(`Unimplemented keyword: ${token.keyword}`);
     }
@@ -186,6 +195,11 @@ class Parser {
         return this.parseStringTemplate();
       case 'int':
         return this.parseIntLiteral();
+      case 'symbol':
+        if (next.symbol === '!' || next.symbol === '-') {
+          return this.parseUnaryExpression();
+        }
+        throw new Error(`Cannot parse expression for symbol: ${next.symbol}`);
       default:
         throw new Error(`Cannot parse expression for token type: ${next.type}`);
     }
@@ -194,6 +208,15 @@ class Parser {
   parseIdentifierExpression(): SpotExpression {
     const token = this.consume('identifier');
     const identifierText = token.identifier;
+
+    // Check if this is a boolean literal
+    if (identifierText === 'True' || identifierText === 'False') {
+      return {
+        type: 'boolean_literal',
+        location: token.location,
+        value: identifierText === 'True',
+      } satisfies SpotExpressionBooleanLiteral;
+    }
 
     // Check if this is a function call
     const next = this.next();
@@ -398,6 +421,87 @@ class Parser {
   next(): SpotToken {
     assert(this.position < this.tokens.length, 'No more tokens to consume');
     return this.tokens[this.position];
+  }
+
+  parseUnaryExpression(): SpotExpressionUnaryOperation {
+    const operatorToken = this.consume('symbol');
+    const operator = operatorToken.symbol as '!' | '-';
+
+    const operand = this.parsePrimaryExpression();
+
+    return {
+      type: 'unary_operation',
+      location: operatorToken.location,
+      operator,
+      operand,
+    };
+  }
+
+  parseIfStatement(): SpotExpressionIfStatement {
+    const ifKeyword = this.consume('keyword');
+    if (ifKeyword.keyword !== 'if') {
+      throw new ParserError('Expected if keyword', ifKeyword.location);
+    }
+
+    const condition = this.parseExpression();
+
+    const openBrace = this.consume('symbol');
+    if (openBrace.symbol !== '{') {
+      throw new ParserError('Expected { after if condition', openBrace.location);
+    }
+
+    const thenBody: SpotStatement[] = [];
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const next = this.next();
+      if (next.type === 'symbol' && next.symbol === '}') {
+        break;
+      }
+      thenBody.push(this.parseNext());
+    }
+
+    const closeBrace = this.consume('symbol');
+    if (closeBrace.symbol !== '}') {
+      throw new ParserError('Expected } to close if body', closeBrace.location);
+    }
+
+    let elseBody: SpotStatement[] | null = null;
+
+    // Check for optional else clause
+    if (this.position < this.tokens.length) {
+      const next = this.next();
+      if (next.type === 'keyword' && next.keyword === 'else') {
+        this.consume('keyword'); // consume 'else'
+
+        const elseOpenBrace = this.consume('symbol');
+        if (elseOpenBrace.symbol !== '{') {
+          throw new ParserError('Expected { after else keyword', elseOpenBrace.location);
+        }
+
+        elseBody = [];
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const next = this.next();
+          if (next.type === 'symbol' && next.symbol === '}') {
+            break;
+          }
+          elseBody.push(this.parseNext());
+        }
+
+        const elseCloseBrace = this.consume('symbol');
+        if (elseCloseBrace.symbol !== '}') {
+          throw new ParserError('Expected } to close else body', elseCloseBrace.location);
+        }
+      }
+    }
+
+    return {
+      type: 'if_statement',
+      location: ifKeyword.location,
+      condition,
+      thenBody,
+      elseBody,
+    };
   }
 
   consume<T extends SpotToken['type']>(tokenType: T): SpotToken & { type: T } {

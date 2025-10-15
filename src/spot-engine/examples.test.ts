@@ -34,4 +34,6 @@ describe('Test against examples', () => {
   it(`Runs example '1_variables.spot`, () => runsExample('1_variables'));
 
   it(`Runs example '2_addition.spot`, () => runsExample('2_addition'));
+
+  it(`Runs example '3_ifs.spot`, () => runsExample('3_ifs'));
 });

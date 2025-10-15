@@ -2186,3 +2186,202 @@ exports[`Tokeniser code_examples folder Tokenises '3_ifs.spot 1`] = `
   },
 ]
 `;
+
+exports[`Tokeniser code_examples folder Tokenises '4_input.spot 1`] = `
+[
+  {
+    "identifier": "fn",
+    "location": {
+      "column": 1,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 4,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 8,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 9,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 5,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "name",
+    "location": {
+      "column": 9,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 14,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "identifier": "input",
+    "location": {
+      "column": 16,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 21,
+      "line": 3,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 22,
+      "line": 3,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Enter your name:",
+    "location": {
+      "column": 39,
+      "line": 3,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 40,
+      "line": 3,
+    },
+    "type": "string_template_end",
+  },
+  {
+    "location": {
+      "column": 40,
+      "line": 3,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 5,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 10,
+      "line": 4,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 4,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Hello, ",
+    "location": {
+      "column": 19,
+      "line": 4,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 19,
+      "line": 4,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "name",
+    "location": {
+      "column": 20,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 24,
+      "line": 4,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "literal": "!",
+    "location": {
+      "column": 26,
+      "line": 4,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 27,
+      "line": 4,
+    },
+    "type": "string_template_end",
+  },
+  {
+    "location": {
+      "column": 27,
+      "line": 4,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 5,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;

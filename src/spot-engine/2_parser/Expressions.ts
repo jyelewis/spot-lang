@@ -73,6 +73,30 @@ export interface SpotExpressionBinaryOperation {
   right: SpotExpression;
 }
 
+export interface SpotExpressionBooleanLiteral {
+  type: 'boolean_literal';
+  location: CodeLocation;
+
+  value: boolean;
+}
+
+export interface SpotExpressionUnaryOperation {
+  type: 'unary_operation';
+  location: CodeLocation;
+
+  operator: '!' | '-';
+  operand: SpotExpression;
+}
+
+export interface SpotExpressionIfStatement {
+  type: 'if_statement';
+  location: CodeLocation;
+
+  condition: SpotExpression;
+  thenBody: SpotStatement[];
+  elseBody: SpotStatement[] | null;
+}
+
 export type SpotExpression =
   | SpotExpressionFunctionDefinition
   | SpotExpressionVariableIdentifier
@@ -81,4 +105,7 @@ export type SpotExpression =
   | SpotExpressionStringTemplate
   | SpotExpressionVariableDeclaration
   | SpotExpressionIntLiteral
-  | SpotExpressionBinaryOperation;
+  | SpotExpressionBinaryOperation
+  | SpotExpressionBooleanLiteral
+  | SpotExpressionUnaryOperation
+  | SpotExpressionIfStatement;

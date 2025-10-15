@@ -6,6 +6,7 @@ import {
   SpotExpressionFunctionCall,
   SpotExpressionFunctionDefinition,
   SpotExpressionVariableDeclaration,
+  SpotExpressionIfStatement,
 } from '../2_parser/Expressions';
 
 let nextRegisterIndex = 0;
@@ -70,18 +71,25 @@ export function compileASTToApplication(ast: SpotStatement[]): SpotApplication {
 function compileFunctionToBytecode(funcDef: SpotExpressionFunctionDefinition): {
   operations: Operation[];
 } {
-  const operations: Operation[] = [];
   const context: CompilationContext = {
     variableRegisters: new Map(),
   };
 
+  // Step 1: Compile all statements with placeholder jumps
+  const operationsWithPlaceholders: Operation[] = [];
+
   for (const statement of funcDef.body) {
+    const baseIndex = operationsWithPlaceholders.length;
+
     if (statement.type === 'function_call') {
       const funcCallOperations = compileFunctionCallToBytecode(statement, context);
-      operations.push(...funcCallOperations);
+      operationsWithPlaceholders.push(...funcCallOperations);
     } else if (statement.type === 'variable_declaration') {
       const varDeclOperations = compileVariableDeclarationToBytecode(statement, context);
-      operations.push(...varDeclOperations);
+      operationsWithPlaceholders.push(...varDeclOperations);
+    } else if (statement.type === 'if_statement') {
+      const ifOperations = compileIfStatementToBytecodeWithOffset(statement, context, baseIndex);
+      operationsWithPlaceholders.push(...ifOperations);
     } else {
       throw new CompilerError(
         `Unimplemented statement type in function body ${statement.type}`,
@@ -90,7 +98,7 @@ function compileFunctionToBytecode(funcDef: SpotExpressionFunctionDefinition): {
     }
   }
 
-  return { operations };
+  return { operations: operationsWithPlaceholders };
 }
 
 function compileFunctionCallToBytecode(
@@ -134,6 +142,102 @@ function compileVariableDeclarationToBytecode(
     ...valueEvaluation.computeOperations,
     // No discard operations since the variable register should stay alive
   ];
+}
+
+function compileIfStatementToBytecodeWithOffset(
+  ifStmt: SpotExpressionIfStatement,
+  context: CompilationContext,
+  baseOffset: number
+): Operation[] {
+  // This is a simplified approach that calculates indices directly
+
+  // Evaluate the condition
+  const conditionEvaluation = compileExpression(ifStmt.condition, context);
+
+  // Compile the then body
+  const thenBodyOperations: Operation[] = [];
+  for (const statement of ifStmt.thenBody) {
+    if (statement.type === 'function_call') {
+      const funcCallOperations = compileFunctionCallToBytecode(statement, context);
+      thenBodyOperations.push(...funcCallOperations);
+    } else if (statement.type === 'variable_declaration') {
+      const varDeclOperations = compileVariableDeclarationToBytecode(statement, context);
+      thenBodyOperations.push(...varDeclOperations);
+    } else if (statement.type === 'if_statement') {
+      // For nested if statements, we don't know the final offset yet, so we'll use relative positions
+      const nestedIfOperations = compileIfStatementToBytecodeWithOffset(statement, context, 0);
+      thenBodyOperations.push(...nestedIfOperations);
+    } else {
+      throw new CompilerError(
+        `Unimplemented statement type in if body ${statement.type}`,
+        statement.location
+      );
+    }
+  }
+
+  // Compile the else body (if present)
+  const elseBodyOperations: Operation[] = [];
+  if (ifStmt.elseBody) {
+    for (const statement of ifStmt.elseBody) {
+      if (statement.type === 'function_call') {
+        const funcCallOperations = compileFunctionCallToBytecode(statement, context);
+        elseBodyOperations.push(...funcCallOperations);
+      } else if (statement.type === 'variable_declaration') {
+        const varDeclOperations = compileVariableDeclarationToBytecode(statement, context);
+        elseBodyOperations.push(...varDeclOperations);
+      } else if (statement.type === 'if_statement') {
+        // For nested if statements, we don't know the final offset yet, so we'll use relative positions
+        const nestedIfOperations = compileIfStatementToBytecodeWithOffset(statement, context, 0);
+        elseBodyOperations.push(...nestedIfOperations);
+      } else {
+        throw new CompilerError(
+          `Unimplemented statement type in else body ${statement.type}`,
+          statement.location
+        );
+      }
+    }
+  }
+
+  // Build the operation list and calculate proper indices
+  const operations: Operation[] = [];
+
+  // Add condition evaluation
+  operations.push(...conditionEvaluation.computeOperations);
+
+  const conditionJumpIndex = operations.length;
+  const thenStartIndex = conditionJumpIndex + 1;
+  const elseStartIndex =
+    thenStartIndex + thenBodyOperations.length + (elseBodyOperations.length > 0 ? 1 : 0);
+  const cleanupStartIndex = elseStartIndex + elseBodyOperations.length;
+
+  // Add conditional jump: if condition is false, jump to else (or cleanup if no else)
+  const jumpTarget = elseBodyOperations.length > 0 ? elseStartIndex : cleanupStartIndex;
+  operations.push({
+    type: 'conditional_jump',
+    location: ifStmt.location,
+    conditionRegister: conditionEvaluation.resultRegister,
+    jumpToOperation: baseOffset + jumpTarget,
+  });
+
+  // Add then body
+  operations.push(...thenBodyOperations);
+
+  // If there's an else body, add unconditional jump to skip it
+  if (elseBodyOperations.length > 0) {
+    operations.push({
+      type: 'unconditional_jump',
+      location: ifStmt.location,
+      jumpToOperation: baseOffset + cleanupStartIndex,
+    });
+
+    // Add else body operations
+    operations.push(...elseBodyOperations);
+  }
+
+  // Add cleanup operations (condition register disposal)
+  operations.push(...conditionEvaluation.discardOperations);
+
+  return operations;
 }
 
 function compileExpression(
@@ -286,6 +390,58 @@ function compileExpression(
       discardOperations: [
         ...leftEvaluation.discardOperations,
         ...rightEvaluation.discardOperations,
+        {
+          type: 'clear_register',
+          location: expression.location,
+          register: resultRegister,
+        },
+      ],
+    };
+  }
+
+  if (expression.type === 'boolean_literal') {
+    // compile boolean literal expression
+    const resultRegister: RegisterReference = { index: nextRegisterIndex++ };
+
+    return {
+      computeOperations: [
+        {
+          type: 'load_constant',
+          location: expression.location,
+          targetRegister: resultRegister,
+          value: expression.value,
+        },
+      ],
+      resultRegister,
+      discardOperations: [
+        {
+          type: 'clear_register',
+          location: expression.location,
+          register: resultRegister,
+        },
+      ],
+    };
+  }
+
+  if (expression.type === 'unary_operation') {
+    // Compile unary operation
+    const operandEvaluation = compileExpression(expression.operand, context);
+    const resultRegister: RegisterReference = { index: nextRegisterIndex++ };
+
+    return {
+      computeOperations: [
+        ...operandEvaluation.computeOperations,
+        {
+          type: 'unary',
+          location: expression.location,
+          targetRegister: resultRegister,
+          operator: expression.operator,
+          operandRegister: operandEvaluation.resultRegister,
+        },
+      ],
+      resultRegister,
+      discardOperations: [
+        ...operandEvaluation.discardOperations,
         {
           type: 'clear_register',
           location: expression.location,
