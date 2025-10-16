@@ -11,6 +11,7 @@ import {
   SpotExpressionBooleanLiteral,
   SpotExpressionUnaryOperation,
   SpotExpressionIfStatement,
+  SpotExpressionWhileStatement,
 } from './Expressions';
 import { SpotStatement } from './Statements';
 import assert from 'node:assert';
@@ -72,6 +73,8 @@ class Parser {
         return this.parseVariableDeclaration();
       case 'if':
         return this.parseIfStatement();
+      case 'while':
+        return this.parseWhileStatement();
       default:
         throw new Error(`Unimplemented keyword: ${token.keyword}`);
     }
@@ -149,7 +152,19 @@ class Parser {
       if (next.type !== 'symbol') break;
 
       // TODO: remove this cast
-      const operator = next.symbol as '+' | '-' | '*' | '/';
+      const operator = next.symbol as
+        | '+'
+        | '-'
+        | '*'
+        | '/'
+        | '<'
+        | '>'
+        | '<='
+        | '>='
+        | '=='
+        | '!='
+        | '&&'
+        | '||';
       const precedence = this.getOperatorPrecedence(operator);
 
       if (precedence < minPrecedence) break;
@@ -172,12 +187,24 @@ class Parser {
 
   getOperatorPrecedence(operator: string): number {
     switch (operator) {
+      case '||':
+        return 0;
+      case '&&':
+        return 1;
+      case '==':
+      case '!=':
+        return 2;
+      case '<':
+      case '>':
+      case '<=':
+      case '>=':
+        return 3;
       case '+':
       case '-':
-        return 1;
+        return 4;
       case '*':
       case '/':
-        return 2;
+        return 5;
       default:
         return -1; // Not an operator we handle
     }
@@ -331,6 +358,14 @@ class Parser {
       throw new ParserError('Expected let keyword', letKeyword.location);
     }
 
+    // Check for optional 'mut' keyword
+    let mutable = false;
+    const next = this.next();
+    if (next.type === 'keyword' && next.keyword === 'mut') {
+      mutable = true;
+      this.consume('keyword'); // consume 'mut'
+    }
+
     const nameToken = this.consume('identifier');
     const variableName = nameToken.identifier;
 
@@ -345,6 +380,7 @@ class Parser {
       type: 'variable_declaration',
       location: letKeyword.location,
       variableName,
+      mutable,
       value,
     };
   }
@@ -359,7 +395,14 @@ class Parser {
     // Handle variable assignments (statements)
     if (next.type === 'symbol' && next.symbol === '=') {
       this.consume('symbol'); // consume '='
-      throw new ParserError('Unimplemented variable assignment', next.location);
+      const value = this.parseExpression();
+
+      return {
+        type: 'variable_assignment',
+        location: token.location,
+        variableName: identifierText,
+        value,
+      };
     }
 
     // Handle function calls and variable references (expressions)
@@ -501,6 +544,42 @@ class Parser {
       condition,
       thenBody,
       elseBody,
+    };
+  }
+
+  parseWhileStatement(): SpotExpressionWhileStatement {
+    const whileKeyword = this.consume('keyword');
+    if (whileKeyword.keyword !== 'while') {
+      throw new ParserError('Expected while keyword', whileKeyword.location);
+    }
+
+    const condition = this.parseExpression();
+
+    const openBrace = this.consume('symbol');
+    if (openBrace.symbol !== '{') {
+      throw new ParserError('Expected { after while condition', openBrace.location);
+    }
+
+    const body: SpotStatement[] = [];
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const next = this.next();
+      if (next.type === 'symbol' && next.symbol === '}') {
+        break;
+      }
+      body.push(this.parseNext());
+    }
+
+    const closeBrace = this.consume('symbol');
+    if (closeBrace.symbol !== '}') {
+      throw new ParserError('Expected } to close while body', closeBrace.location);
+    }
+
+    return {
+      type: 'while_statement',
+      location: whileKeyword.location,
+      condition,
+      body,
     };
   }
 

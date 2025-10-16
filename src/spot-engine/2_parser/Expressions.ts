@@ -54,6 +54,7 @@ export interface SpotExpressionVariableDeclaration {
   location: CodeLocation;
 
   variableName: string;
+  mutable: boolean;
   value: SpotExpression;
 }
 
@@ -69,7 +70,7 @@ export interface SpotExpressionBinaryOperation {
   location: CodeLocation;
 
   left: SpotExpression;
-  operator: '+' | '-' | '*' | '/';
+  operator: '+' | '-' | '*' | '/' | '<' | '>' | '<=' | '>=' | '==' | '!=' | '&&' | '||';
   right: SpotExpression;
 }
 
@@ -97,6 +98,22 @@ export interface SpotExpressionIfStatement {
   elseBody: SpotStatement[] | null;
 }
 
+export interface SpotExpressionWhileStatement {
+  type: 'while_statement';
+  location: CodeLocation;
+
+  condition: SpotExpression;
+  body: SpotStatement[];
+}
+
+export interface SpotExpressionVariableAssignment {
+  type: 'variable_assignment';
+  location: CodeLocation;
+
+  variableName: string;
+  value: SpotExpression;
+}
+
 export type SpotExpression =
   | SpotExpressionFunctionDefinition
   | SpotExpressionVariableIdentifier
@@ -108,4 +125,6 @@ export type SpotExpression =
   | SpotExpressionBinaryOperation
   | SpotExpressionBooleanLiteral
   | SpotExpressionUnaryOperation
-  | SpotExpressionIfStatement;
+  | SpotExpressionIfStatement
+  | SpotExpressionWhileStatement
+  | SpotExpressionVariableAssignment;

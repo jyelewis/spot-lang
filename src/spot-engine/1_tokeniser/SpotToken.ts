@@ -21,7 +21,7 @@ export interface SpotTokenComment extends SpotTokenBase<'comment'> {
   comment: string;
 }
 
-export const spotKeywords = ['func', 'let', 'mut', 'if', 'else', 'return'] as const;
+export const spotKeywords = ['func', 'let', 'mut', 'if', 'else', 'return', 'while'] as const;
 type SpotKeyword = (typeof spotKeywords)[number];
 
 export interface SpotTokenKeyword extends SpotTokenBase<'keyword'> {

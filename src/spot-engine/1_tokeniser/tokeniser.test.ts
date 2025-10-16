@@ -26,6 +26,9 @@ describe('Tokeniser', () => {
 
     it(`Tokenises '4_input.spot`, () =>
       expect(tokeniseExample('4_input')).resolves.toMatchSnapshot());
+
+    it(`Tokenises '5_while.spot`, () =>
+      expect(tokeniseExample('5_while')).resolves.toMatchSnapshot());
   });
 
   describe('Specific case', () => {

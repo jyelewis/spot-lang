@@ -7,6 +7,8 @@ import {
   SpotExpressionFunctionDefinition,
   SpotExpressionVariableDeclaration,
   SpotExpressionIfStatement,
+  SpotExpressionWhileStatement,
+  SpotExpressionVariableAssignment,
 } from '../2_parser/Expressions';
 
 let nextRegisterIndex = 0;
@@ -93,6 +95,16 @@ function compileFunctionToBytecode(funcDef: SpotExpressionFunctionDefinition): {
     } else if (statement.type === 'if_statement') {
       const ifOperations = compileIfStatementToBytecodeWithOffset(statement, context, baseIndex);
       operationsWithPlaceholders.push(...ifOperations);
+    } else if (statement.type === 'while_statement') {
+      const whileOperations = compileWhileStatementToBytecodeWithOffset(
+        statement,
+        context,
+        baseIndex
+      );
+      operationsWithPlaceholders.push(...whileOperations);
+    } else if (statement.type === 'variable_assignment') {
+      const varAssignOperations = compileVariableAssignmentToBytecode(statement, context);
+      operationsWithPlaceholders.push(...varAssignOperations);
     } else {
       throw new CompilerError(
         `Unimplemented statement type in function body ${statement.type}`,
@@ -144,6 +156,33 @@ function compileVariableDeclarationToBytecode(
   return [
     ...valueEvaluation.computeOperations,
     // No discard operations since the variable register should stay alive
+  ];
+}
+
+function compileVariableAssignmentToBytecode(
+  varAssign: SpotExpressionVariableAssignment,
+  context: CompilationContext
+): Operation[] {
+  // Look up the variable in our context
+  const variableRegister = context.variableRegisters.get(varAssign.variableName);
+  if (!variableRegister) {
+    throw new CompilerError(
+      `Variable '${varAssign.variableName}' is not defined`,
+      varAssign.location
+    );
+  }
+
+  const valueEvaluation = compileExpression(varAssign.value, context);
+
+  return [
+    ...valueEvaluation.computeOperations,
+    {
+      type: 'copy_register',
+      location: varAssign.location,
+      sourceRegister: valueEvaluation.resultRegister,
+      targetRegister: variableRegister,
+    },
+    ...valueEvaluation.discardOperations,
   ];
 }
 
@@ -236,6 +275,89 @@ function compileIfStatementToBytecodeWithOffset(
     // Add else body operations
     operations.push(...elseBodyOperations);
   }
+
+  // Add cleanup operations (condition register disposal)
+  operations.push(...conditionEvaluation.discardOperations);
+
+  return operations;
+}
+
+function compileWhileStatementToBytecodeWithOffset(
+  whileStmt: SpotExpressionWhileStatement,
+  context: CompilationContext,
+  baseOffset: number
+): Operation[] {
+  // Compile the while body first to determine sizes
+  const bodyOperations: Operation[] = [];
+  for (const statement of whileStmt.body) {
+    if (statement.type === 'function_call') {
+      const funcCallOperations = compileFunctionCallToBytecode(statement, context);
+      bodyOperations.push(...funcCallOperations);
+    } else if (statement.type === 'variable_declaration') {
+      const varDeclOperations = compileVariableDeclarationToBytecode(statement, context);
+      bodyOperations.push(...varDeclOperations);
+    } else if (statement.type === 'variable_assignment') {
+      const varAssignOperations = compileVariableAssignmentToBytecode(statement, context);
+      bodyOperations.push(...varAssignOperations);
+    } else if (statement.type === 'if_statement') {
+      // For nested if statements, we don't know the final offset yet, so we'll use relative positions
+      const nestedIfOperations = compileIfStatementToBytecodeWithOffset(statement, context, 0);
+      bodyOperations.push(...nestedIfOperations);
+    } else if (statement.type === 'while_statement') {
+      // For nested while statements, we don't know the final offset yet, so we'll use relative positions
+      const nestedWhileOperations = compileWhileStatementToBytecodeWithOffset(
+        statement,
+        context,
+        0
+      );
+      bodyOperations.push(...nestedWhileOperations);
+    } else {
+      throw new CompilerError(
+        `Unimplemented statement type in while body ${statement.type}`,
+        statement.location
+      );
+    }
+  }
+
+  // Evaluate the condition
+  const conditionEvaluation = compileExpression(whileStmt.condition, context);
+
+  // Build the operation list and calculate proper indices
+  const operations: Operation[] = [];
+
+  // The loop structure:
+  // 1. condition evaluation
+  // 2. conditional jump to end if condition is false
+  // 3. loop body
+  // 4. unconditional jump back to condition evaluation
+  // 5. cleanup (condition register disposal)
+
+  const conditionStartIndex = 0;
+  const conditionJumpIndex = conditionEvaluation.computeOperations.length;
+  const bodyStartIndex = conditionJumpIndex + 1;
+  const bodyEndJumpIndex = bodyStartIndex + bodyOperations.length;
+  const cleanupStartIndex = bodyEndJumpIndex + 1;
+
+  // Add condition evaluation
+  operations.push(...conditionEvaluation.computeOperations);
+
+  // Add conditional jump: if condition is false, jump to cleanup
+  operations.push({
+    type: 'conditional_jump',
+    location: whileStmt.location,
+    conditionRegister: conditionEvaluation.resultRegister,
+    jumpToOperation: baseOffset + cleanupStartIndex,
+  });
+
+  // Add body operations
+  operations.push(...bodyOperations);
+
+  // Add unconditional jump back to condition evaluation
+  operations.push({
+    type: 'unconditional_jump',
+    location: whileStmt.location,
+    jumpToOperation: baseOffset + conditionStartIndex,
+  });
 
   // Add cleanup operations (condition register disposal)
   operations.push(...conditionEvaluation.discardOperations);

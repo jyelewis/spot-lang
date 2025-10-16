@@ -43,8 +43,16 @@ export interface ArithmeticOperation {
 
   targetRegister: RegisterReference;
   leftRegister: RegisterReference;
-  operator: '+' | '-' | '*' | '/';
+  operator: '+' | '-' | '*' | '/' | '<' | '>' | '<=' | '>=' | '==' | '!=' | '&&' | '||';
   rightRegister: RegisterReference;
+}
+
+export interface CopyRegisterOperation {
+  type: 'copy_register';
+  location: CodeLocation;
+
+  sourceRegister: RegisterReference;
+  targetRegister: RegisterReference;
 }
 
 export interface UnaryOperation {
@@ -84,6 +92,7 @@ export type Operation =
   | ClearRegisterOperation
   | StringConcatenateOperation
   | ArithmeticOperation
+  | CopyRegisterOperation
   | UnaryOperation
   | ConditionalJumpOperation
   | UnconditionalJumpOperation

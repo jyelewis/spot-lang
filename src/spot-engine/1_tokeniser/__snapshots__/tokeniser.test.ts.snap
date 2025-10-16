@@ -2385,3 +2385,252 @@ exports[`Tokeniser code_examples folder Tokenises '4_input.spot 1`] = `
   },
 ]
 `;
+
+exports[`Tokeniser code_examples folder Tokenises '5_while.spot 1`] = `
+[
+  {
+    "keyword": "func",
+    "location": {
+      "column": 1,
+      "line": 2,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "main",
+    "location": {
+      "column": 6,
+      "line": 2,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 10,
+      "line": 2,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 11,
+      "line": 2,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 13,
+      "line": 2,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "keyword": "let",
+    "location": {
+      "column": 5,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "keyword": "mut",
+    "location": {
+      "column": 9,
+      "line": 3,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "count",
+    "location": {
+      "column": 13,
+      "line": 3,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 19,
+      "line": 3,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "int": 0,
+    "location": {
+      "column": 21,
+      "line": 3,
+    },
+    "type": "int",
+  },
+  {
+    "keyword": "while",
+    "location": {
+      "column": 5,
+      "line": 4,
+    },
+    "type": "keyword",
+  },
+  {
+    "identifier": "count",
+    "location": {
+      "column": 11,
+      "line": 4,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 17,
+      "line": 4,
+    },
+    "symbol": "<",
+    "type": "symbol",
+  },
+  {
+    "int": 5,
+    "location": {
+      "column": 19,
+      "line": 4,
+    },
+    "type": "int",
+  },
+  {
+    "location": {
+      "column": 21,
+      "line": 4,
+    },
+    "symbol": "{",
+    "type": "symbol",
+  },
+  {
+    "identifier": "print",
+    "location": {
+      "column": 9,
+      "line": 5,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 14,
+      "line": 5,
+    },
+    "symbol": "(",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 15,
+      "line": 5,
+    },
+    "type": "string_template_start",
+  },
+  {
+    "literal": "Count is ",
+    "location": {
+      "column": 25,
+      "line": 5,
+    },
+    "type": "string_literal",
+  },
+  {
+    "location": {
+      "column": 25,
+      "line": 5,
+    },
+    "type": "string_template_expression_start",
+  },
+  {
+    "identifier": "count",
+    "location": {
+      "column": 26,
+      "line": 5,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 31,
+      "line": 5,
+    },
+    "type": "string_template_expression_end",
+  },
+  {
+    "location": {
+      "column": 33,
+      "line": 5,
+    },
+    "type": "string_template_end",
+  },
+  {
+    "location": {
+      "column": 33,
+      "line": 5,
+    },
+    "symbol": ")",
+    "type": "symbol",
+  },
+  {
+    "identifier": "count",
+    "location": {
+      "column": 9,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 15,
+      "line": 6,
+    },
+    "symbol": "=",
+    "type": "symbol",
+  },
+  {
+    "identifier": "count",
+    "location": {
+      "column": 17,
+      "line": 6,
+    },
+    "type": "identifier",
+  },
+  {
+    "location": {
+      "column": 23,
+      "line": 6,
+    },
+    "symbol": "+",
+    "type": "symbol",
+  },
+  {
+    "int": 1,
+    "location": {
+      "column": 25,
+      "line": 6,
+    },
+    "type": "int",
+  },
+  {
+    "location": {
+      "column": 5,
+      "line": 7,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+  {
+    "location": {
+      "column": 1,
+      "line": 8,
+    },
+    "symbol": "}",
+    "type": "symbol",
+  },
+]
+`;

@@ -48,4 +48,6 @@ describe('Test against examples', () => {
   it(`Runs example '3_ifs.spot`, () => runsExample('3_ifs'));
 
   it(`Runs example '4_input.spot`, () => runsExample('4_input'));
+
+  it(`Runs example '5_while.spot`, () => runsExample('5_while'));
 });

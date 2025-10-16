@@ -71,8 +71,53 @@ The VM uses a register-based architecture where:
 - The main module must contain a `main` function as the entry point
 - Built-in functions can be implemented as intrinsics
 
+### Intrinsic Functions
+
+Built-in functions are implemented as intrinsics in the standard library:
+
+1. **Compiler Definition** (`3_compiler/compiler.ts`):
+   ```typescript
+   application.modules['std'] = {
+     functions: {
+       print: { intrinsic: 'print' },
+       input: { intrinsic: 'input' },
+     },
+   };
+   ```
+
+2. **VM Implementation** (`4_vm/vm.ts`):
+   - Intrinsic functions are executed directly by the VM
+   - Support both sync and async operations
+   - Can return values that are stored in target registers
+
+### Function Return Values
+
+Functions can return values using the register system:
+
+- **Function calls with return values**: Include optional `targetRegister` in `FunctionCallOperation`
+- **Intrinsic returns**: Async intrinsic functions can return values directly
+- **Register assignment**: VM stores return values in the specified target register
+
+### Test Infrastructure
+
+The example test system supports interactive programs:
+
+- **Input files**: Tests can read input from `<example>_input.txt` files
+- **Output validation**: Expected output is verified against `<example>_output.txt`
+- **VM input injection**: Test framework provides mock input functions during execution
+- **Backward compatibility**: Examples without input files continue to work normally
+
+### VM Execution Model
+
+- **Async support**: VM operations and intrinsics support async/await patterns
+- **Register lifecycle**: Registers are allocated, used, and cleared as operations execute
+- **Function call flow**: `executeFunction()` handles both bytecode and intrinsic execution paths
+- **Input/Output abstraction**: `printFn` and `inputFn` can be overridden for testing or different environments
+
 When working with the language implementation:
 
 - Follow the 4-stage pipeline when adding new features
 - Each stage should have corresponding tests
 - The `SpotApplication` format bridges compiler output and VM input
+- Use intrinsics for built-in functionality that needs direct system access
+- Ensure async operations are properly handled throughout the execution chain
