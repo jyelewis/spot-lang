@@ -1,0 +1,24 @@
+
+// TODO: this code fails and I don't know why
+//        bug 1: Empty line causes parse error (after if else)
+//        bug 2: weird looping behavior? - suspect this is bytecode generation issue
+func main() {
+    let mut count = 0
+    print("I'm going to ask you {count} times for your name.")
+
+    while count < 3 {
+        print(111111)
+        let name = input("What is your name? ")
+        print(22222)
+        if name == "Jye" {
+            print("Hello, Jye! Welcome back!")
+        } else {
+            print("Hello, {name}! Nice to meet you!")
+        }
+        print(333333)
+
+
+        count = count + 1
+        print(44444)
+    }
+}
