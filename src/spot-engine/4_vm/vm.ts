@@ -1,6 +1,7 @@
 import { SpotApplication } from '../3_compiler/compiler';
 import { VMError } from './VMError';
 import { RegisterReference } from '../3_compiler/Operations';
+import * as readline from 'readline';
 
 export async function executeApplicationAndCaptureOutput(
   application: SpotApplication,
@@ -16,7 +17,7 @@ export async function executeApplicationAndCaptureOutput(
   // Set up input function for testing
   if (inputData) {
     let inputIndex = 0;
-    vm.inputFn = async (prompt: string): Promise<string> => {
+    vm.inputFn = async (_prompt: string): Promise<string> => {
       if (inputIndex >= inputData.length) {
         throw new Error('No more input data available for testing');
       }
@@ -46,7 +47,6 @@ export class SpotVM {
   public inputFn = (prompt: string): Promise<string> => {
     // Default implementation using readline for interactive input
     return new Promise((resolve) => {
-      const readline = require('readline');
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -97,7 +97,7 @@ export class SpotVM {
           this.registers.set(operation.targetRegister.index, value);
           break;
         }
-        case 'function_call':
+        case 'function_call': {
           const result = await this.executeFunction(
             'std', // TODO: hardcoded
             operation.functionName,
@@ -108,7 +108,8 @@ export class SpotVM {
             this.registers.set(operation.targetRegister.index, result);
           }
           break;
-        // TODO: we're going to want to come back and make this an overloadable struct value
+          // TODO: we're going to want to come back and make this an overloadable struct value
+        }
         case 'string_concatenate': {
           let concatenatedResult = '';
           for (const partRegister of operation.partRegisters) {
@@ -202,8 +203,7 @@ export class SpotVM {
                 result = leftValue || rightValue;
                 break;
             }
-          }
-          else {
+          } else {
             throw new VMError(`Unknown arithmetic operator: ${(operation as any).operator}`);
           }
 
@@ -286,7 +286,10 @@ export class SpotVM {
     }
   }
 
-  async executeIntrinsicFunction(intrinsicName: string, parameters: RegisterReference[]): Promise<string | number | boolean | void> {
+  async executeIntrinsicFunction(
+    intrinsicName: string,
+    parameters: RegisterReference[]
+  ): Promise<string | number | boolean | void> {
     if (intrinsicName === 'print') {
       if (parameters.length !== 1) {
         throw new VMError('intrinsic "print" takes exactly one parameter');

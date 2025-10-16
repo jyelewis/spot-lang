@@ -76,6 +76,7 @@ The VM uses a register-based architecture where:
 Built-in functions are implemented as intrinsics in the standard library:
 
 1. **Compiler Definition** (`3_compiler/compiler.ts`):
+
    ```typescript
    application.modules['std'] = {
      functions: {
