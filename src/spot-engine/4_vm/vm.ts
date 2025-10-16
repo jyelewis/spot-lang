@@ -89,6 +89,14 @@ export class SpotVM {
         case 'clear_register':
           this.registers.delete(operation.register.index);
           break;
+        case 'copy_register': {
+          const value = this.registers.get(operation.sourceRegister.index);
+          if (value === undefined) {
+            throw new VMError(`Register ${operation.sourceRegister.index} is empty`);
+          }
+          this.registers.set(operation.targetRegister.index, value);
+          break;
+        }
         case 'function_call':
           const result = await this.executeFunction(
             'std', // TODO: hardcoded
@@ -125,27 +133,82 @@ export class SpotVM {
             throw new VMError(`Register ${operation.rightRegister.index} is empty`);
           }
 
-          // Ensure both values are numbers
-          if (typeof leftValue !== 'number' || typeof rightValue !== 'number') {
-            throw new VMError(`Arithmetic operations require numeric operands`);
+          let result: number | boolean | undefined;
+
+          // Handle arithmetic operations (require numbers, return numbers)
+          if (['+', '-', '*', '/'].includes(operation.operator)) {
+            if (typeof leftValue !== 'number' || typeof rightValue !== 'number') {
+              throw new VMError(`Arithmetic operations require numeric operands`);
+            }
+
+            switch (operation.operator) {
+              case '+':
+                result = leftValue + rightValue;
+                break;
+              case '-':
+                result = leftValue - rightValue;
+                break;
+              case '*':
+                result = leftValue * rightValue;
+                break;
+              case '/':
+                result = leftValue / rightValue;
+                break;
+            }
+          }
+          // Handle comparison operations (require numbers, return booleans)
+          else if (['<', '>', '<=', '>='].includes(operation.operator)) {
+            if (typeof leftValue !== 'number' || typeof rightValue !== 'number') {
+              throw new VMError(`Comparison operations require numeric operands`);
+            }
+
+            switch (operation.operator) {
+              case '<':
+                result = leftValue < rightValue;
+                break;
+              case '>':
+                result = leftValue > rightValue;
+                break;
+              case '<=':
+                result = leftValue <= rightValue;
+                break;
+              case '>=':
+                result = leftValue >= rightValue;
+                break;
+            }
+          }
+          // Handle equality operations (any types, return booleans)
+          else if (['==', '!='].includes(operation.operator)) {
+            switch (operation.operator) {
+              case '==':
+                result = leftValue === rightValue;
+                break;
+              case '!=':
+                result = leftValue !== rightValue;
+                break;
+            }
+          }
+          // Handle logical operations (require booleans, return booleans)
+          else if (['&&', '||'].includes(operation.operator)) {
+            if (typeof leftValue !== 'boolean' || typeof rightValue !== 'boolean') {
+              throw new VMError(`Logical operations require boolean operands`);
+            }
+
+            switch (operation.operator) {
+              case '&&':
+                result = leftValue && rightValue;
+                break;
+              case '||':
+                result = leftValue || rightValue;
+                break;
+            }
+          }
+          else {
+            throw new VMError(`Unknown arithmetic operator: ${(operation as any).operator}`);
           }
 
-          let result: number;
-          switch (operation.operator) {
-            case '+':
-              result = leftValue + rightValue;
-              break;
-            case '-':
-              result = leftValue - rightValue;
-              break;
-            case '*':
-              result = leftValue * rightValue;
-              break;
-            case '/':
-              result = leftValue / rightValue;
-              break;
-            default:
-              throw new VMError(`Unknown arithmetic operator: ${(operation as any).operator}`);
+          if (result === undefined) {
+            throw new VMError(`Failed to compute result for operator: ${operation.operator}`);
           }
 
           this.registers.set(operation.targetRegister.index, result);
